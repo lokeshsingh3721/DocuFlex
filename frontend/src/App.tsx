@@ -1,9 +1,11 @@
-import { useState } from "react";
-
-import "./App.css";
+import Sidebar from "./Sidebar";
 
 function App() {
-  return <div className="">File manager</div>;
+  return (
+    <div>
+      <Sidebar />
+    </div>
+  );
 }
 
 export default App;
