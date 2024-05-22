@@ -2,8 +2,9 @@ import React from "react";
 
 const Recent = () => {
   return (
-    <span className="svg-parent">
+    <span className="svg-parent ">
       <svg
+        className="w-5 h-auto"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         width="50"

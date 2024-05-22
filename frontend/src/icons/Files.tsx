@@ -4,7 +4,7 @@ const Files = () => {
   return (
     <div className="svg-parent">
       <svg
-        className="stroke-white stroke-[1.5] "
+        className=" w-5 h-auto stroke-white stroke-[1.5] "
         xmlns="http://www.w3.org/2000/svg"
         x="0px"
         y="0px"

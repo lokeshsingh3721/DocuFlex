@@ -4,7 +4,7 @@ const Video = () => {
   return (
     <div className="svg-parent">
       <svg
-        className="stroke-white stroke-[1.5] "
+        className="stroke-white w-5 h-auto stroke-[1.5] "
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         width="24"

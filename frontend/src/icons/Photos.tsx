@@ -4,7 +4,7 @@ const Photos = () => {
   return (
     <div className="svg-parent">
       <svg
-        className="stroke-white stroke-[20]"
+        className="stroke-white stroke-[20] w-5 h-auto"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 512 512"
       >

@@ -2,9 +2,9 @@ import React from "react";
 
 const Home = () => {
   return (
-    <div className="svg-parent ">
+    <div className="svg-parent underline ">
       <svg
-        className="stroke-white stroke-[1.5] "
+        className="stroke-white w-5 h-auto stroke-[1.5] "
         xmlns="http://www.w3.org/2000/svg"
         x="0px"
         y="0px"

@@ -4,7 +4,7 @@ const Logout = () => {
   return (
     <div className="text-white font-light text-xs flex flex-col  items-center justify-center px-4 py-2 hover:cursor-pointer">
       <svg
-        className="stroke-white stroke-[18] fill-black "
+        className="stroke-white w-5 h-auto stroke-[18] fill-black "
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 512 512"
       >

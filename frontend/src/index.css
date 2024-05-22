@@ -9,9 +9,9 @@
   font-family: "Roboto";
 }
 
-svg {
+/* svg {
   @apply w-5 h-auto;
-}
+} */
 
 .svg-parent {
   @apply text-white font-light text-xs flex flex-col items-center justify-center   hover:cursor-pointer  ml-2 hover:underline px-4 py-2;
