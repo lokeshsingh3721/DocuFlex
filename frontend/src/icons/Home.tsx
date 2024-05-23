@@ -1,14 +1,17 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname.substring(1) || null;
   return (
     <div
       onClick={() => {
         navigate("/");
       }}
-      className="svg-parent underline "
+      className={`svg-parent ${
+        currentPath === null ? "underline" : "no-underline"
+      }`}
     >
       <svg
         className="stroke-white w-5 h-auto stroke-[1.5] "

@@ -1,8 +1,18 @@
-import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Video = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname.substring(1);
   return (
-    <div className="svg-parent">
+    <div
+      onClick={() => {
+        navigate("/videos");
+      }}
+      className={`svg-parent ${
+        currentPath === "videos" ? "underline" : "no-underline"
+      }`}
+    >
       <svg
         className="stroke-white w-5 h-auto stroke-[1.5] "
         xmlns="http://www.w3.org/2000/svg"

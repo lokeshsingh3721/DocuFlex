@@ -1,8 +1,14 @@
-import React from "react";
+import { useLocation } from "react-router";
 
 const Setting = () => {
+  const location = useLocation();
+  const currentPath = location.pathname.substring(1);
   return (
-    <div className="svg-parent">
+    <div
+      className={`svg-parent ${
+        currentPath === "setting" ? "underline" : "no-underline"
+      }`}
+    >
       <svg
         className="w-5 h-auto"
         xmlns="http://www.w3.org/2000/svg"

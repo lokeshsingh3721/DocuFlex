@@ -3,9 +3,9 @@ import Home from "../icons/Home";
 import Files from "../icons/Files";
 import Video from "../icons/Video";
 import Photos from "../icons/Photos";
-import Recent from "../icons/Recent";
 import Setting from "../icons/Setting";
 import Logout from "../icons/Logout";
+import Trash from "../icons/Trash";
 
 const LeftSidebar = () => {
   return (
@@ -16,7 +16,7 @@ const LeftSidebar = () => {
         <Files />
         <Video />
         <Photos />
-        <Recent />
+        <Trash />
         <Setting />
       </div>
       <div className="flex flex-col  justify-center items-center gap-2 ">
