@@ -7,7 +7,7 @@ import Recent from "../icons/Recent";
 import Setting from "../icons/Setting";
 import Logout from "../icons/Logout";
 
-const Sidebar = () => {
+const LeftSidebar = () => {
   return (
     <div className="w-[10%]  bg-black  h-screen flex flex-col  justify-between py-4 items-center  fixed ">
       <Logo />
@@ -26,4 +26,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default LeftSidebar;

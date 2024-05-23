@@ -1,8 +1,14 @@
-import React from "react";
+import { useNavigate } from "react-router";
 
 const Files = () => {
+  const navigate = useNavigate();
   return (
-    <div className="svg-parent">
+    <div
+      onClick={() => {
+        navigate("/files");
+      }}
+      className="svg-parent"
+    >
       <svg
         className=" w-5 h-auto stroke-white stroke-[1.5] "
         xmlns="http://www.w3.org/2000/svg"

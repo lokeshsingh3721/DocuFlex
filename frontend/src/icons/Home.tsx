@@ -1,8 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
-    <div className="svg-parent underline ">
+    <div
+      onClick={() => {
+        navigate("/");
+      }}
+      className="svg-parent underline "
+    >
       <svg
         className="stroke-white w-5 h-auto stroke-[1.5] "
         xmlns="http://www.w3.org/2000/svg"
