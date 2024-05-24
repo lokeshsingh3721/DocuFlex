@@ -1,7 +1,6 @@
-import React from "react";
+import { FolderType } from "../types";
 
-const Table = ({ files }: { files: any }) => {
-  console.log(files);
+const Table = ({ files }: { files: FolderType[] }) => {
   return (
     <table className="w-full bg-white border border-gray-200">
       <thead>
@@ -19,12 +18,12 @@ const Table = ({ files }: { files: any }) => {
       <tbody>
         {files.map((file, index) => (
           <tr key={index} className="hover:bg-gray-50">
-            <td className="py-2 px-4 border-b">{file.name}</td>
+            <td className="py-2 px-4 border-b">{file?.name}</td>
             <td className="py-2 px-4 border-b">
-              {file.lastEdit ? file.lastEdit : "2024-05-21 14:33"}
+              {file?.last_edit ? file?.last_edit : "2024-05-21 14:33"}
             </td>
             <td className="py-2 px-4 border-b">
-              {file.size ? file.size : "15 KB"}
+              {file?.size ? file?.size : "15 KB"}
             </td>
             <td className="py-2 px-4 border-b text-center">
               <button className="text-blue-500 hover:underline mr-2">

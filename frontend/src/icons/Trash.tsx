@@ -17,9 +17,6 @@ const Trash = () => {
         height="50"
         fill="none"
         stroke="white"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       >
         <path d="M3 6h18" />
         <path d="M8 6V4c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v2" />

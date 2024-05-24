@@ -1,5 +1,3 @@
-import React from "react";
-
 const Navigator = () => {
   return (
     <div className="mt-8 mb-4 flex justify-between items-center pr-6">

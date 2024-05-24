@@ -1,29 +1,5 @@
-import React from "react";
 import Table from "../components/Table";
-
-const files = [
-  {
-    name: "video1.mp4",
-    lastEdit: "2024-05-21 14:33",
-    size: "15 MB",
-  },
-  {
-    name: "video2.mp4",
-    lastEdit: "2024-05-20 10:22",
-    size: "45 MB",
-  },
-  {
-    name: "video3.mp4",
-    lastEdit: "2024-05-20 10:22",
-    size: "40 MB",
-  },
-  {
-    name: "video4.mp4",
-    lastEdit: "2024-05-21 14:33",
-    size: "15 MB",
-  },
-  // Add more file objects as needed
-];
+import { Files } from "../data";
 
 const Videos = () => {
   return (
@@ -52,7 +28,7 @@ const Videos = () => {
           <p>Sort:A-Z</p>
         </div>
       </div>
-      <Table files={files} />
+      <Table files={Files} />
     </div>
   );
 };

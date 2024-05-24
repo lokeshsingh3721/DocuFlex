@@ -1,5 +1,3 @@
-import React from "react";
-
 const Logout = () => {
   return (
     <div className="text-white font-light text-xs flex flex-col  items-center justify-center px-4 py-2 hover:cursor-pointer">

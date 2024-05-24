@@ -1,29 +1,5 @@
-import React from "react";
 import Table from "../components/Table";
-
-const files = [
-  {
-    name: "Image1.png",
-    lastEdit: "2024-05-21 14:33",
-    size: "15 KB",
-  },
-  {
-    name: "Image2.jpeg",
-    lastEdit: "2024-05-20 10:22",
-    size: "45 KB",
-  },
-  {
-    name: "Image3.jpg",
-    lastEdit: "2024-05-20 10:22",
-    size: "40 KB",
-  },
-  {
-    name: "Image4.png",
-    lastEdit: "2024-05-21 14:33",
-    size: "15 KB",
-  },
-  // Add more file objects as needed
-];
+import { Files } from "../data";
 
 const Images = () => {
   return (
@@ -52,7 +28,7 @@ const Images = () => {
           <p>Sort:A-Z</p>
         </div>
       </div>
-      <Table files={files} />
+      <Table files={Files} />
     </div>
   );
 };

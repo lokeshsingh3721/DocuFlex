@@ -1,39 +1,5 @@
-import React from "react";
 import Table from "../components/Table";
-
-const files = [
-  {
-    name: "ExampleFile1.txt",
-    lastEdit: "2024-05-21 14:33",
-    size: "15 KB",
-  },
-  {
-    name: "ExampleFile2.docx",
-    lastEdit: "2024-05-20 10:22",
-    size: "45 KB",
-  },
-  {
-    name: "ExampleFile3.docx",
-    lastEdit: "2024-05-20 10:22",
-    size: "40 KB",
-  },
-  {
-    name: "ExampleFile1.txt",
-    lastEdit: "2024-05-21 14:33",
-    size: "15 KB",
-  },
-  {
-    name: "ExampleFile2.docx",
-    lastEdit: "2024-05-20 10:22",
-    size: "45 KB",
-  },
-  {
-    name: "ExampleFile3.docx",
-    lastEdit: "2024-05-20 10:22",
-    size: "40 KB",
-  },
-  // Add more file objects as needed
-];
+import { Files as files } from "../data";
 
 const Files = () => {
   return (

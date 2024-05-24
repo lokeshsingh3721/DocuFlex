@@ -1,5 +1,3 @@
-import React from "react";
-
 const RightSidebar = () => {
   return (
     <div className=" bg-black w-[18%] h-screen flex flex-col  gap-5 py-4 px-2 items-center  fixed top-0 right-0 text-white font-light">
