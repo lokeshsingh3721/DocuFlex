@@ -1,8 +1,15 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const Folder = ({ name }: { name: string }) => {
+const Folder = ({ name, id }: { name: string; id: string }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="w-1/7 border-2 border-gray-400 flex flex-col justify-center items-center px-4 py-3 gap-1 rounded hover:scale-105 transition hover:cursor-pointer">
+    <div
+      onClick={() => {
+        navigate(`/${name}/${id}`);
+      }}
+      className="w-1/7 border-2 border-gray-400 flex flex-col justify-center items-center px-4 py-3 gap-1 rounded hover:scale-105 transition hover:cursor-pointer"
+    >
       <svg
         className="w-10 h-auto "
         xmlns="http://www.w3.org/2000/svg"
