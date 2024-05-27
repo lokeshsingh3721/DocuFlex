@@ -1,13 +1,16 @@
 import { useLocation } from "react-router";
+import { useNavigationContext } from "../context/NavigationProvider";
 
 const Setting = () => {
   const location = useLocation();
+  const { setPageNavigation } = useNavigationContext()
+
   const currentPath = location.pathname.substring(1);
   return (
     <div
-      className={`svg-parent ${
-        currentPath === "setting" ? "underline" : "no-underline"
-      }`}
+      onClick={() => { setPageNavigation(null) }}
+      className={`svg-parent ${currentPath === "setting" ? "underline" : "no-underline"
+        }`}
     >
       <svg
         className="w-5 h-auto"
@@ -24,6 +27,7 @@ const Setting = () => {
       Setting
     </div>
   );
+
 };
 
 export default Setting;

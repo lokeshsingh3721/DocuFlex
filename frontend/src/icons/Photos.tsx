@@ -1,16 +1,20 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigationContext } from "../context/NavigationProvider";
 
 const Photos = () => {
   const location = useLocation();
   const currentPath = location.pathname.substring(1);
-
+  const { setPageNavigation } = useNavigationContext()
   const navigate = useNavigate();
   return (
     <div
-      onClick={() => navigate("/images")}
-      className={`svg-parent ${
-        currentPath === "images" ? "underline" : "no-underline"
-      }`}
+      onClick={() => {
+        navigate("/images")
+        setPageNavigation(null)
+      }}
+
+      className={`svg-parent ${currentPath === "images" ? "underline" : "no-underline"
+        }`}
     >
       <svg
         className="stroke-white stroke-[20] w-5 h-auto"

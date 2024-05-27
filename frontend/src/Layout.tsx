@@ -1,12 +1,14 @@
 import React from "react";
 import LeftSidebar from "./components/LeftSidebar";
 import RightSidebar from "./components/RightSidebar";
-
+import Breadcrumb from './components/Breadcrumb'
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <LeftSidebar />
-      <div className=" ml-32 w-[70%]">{children}</div>
+      <Breadcrumb />
+      <div className=" ml-32 w-[70%]">
+        {children}</div>
       <RightSidebar />
     </>
   );

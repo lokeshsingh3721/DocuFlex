@@ -1,17 +1,19 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigationContext } from "../context/NavigationProvider";
 
 const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname.substring(1) || null;
+  const { setPageNavigation } = useNavigationContext()
   return (
     <div
       onClick={() => {
         navigate("/");
+        setPageNavigation(null)
       }}
-      className={`svg-parent ${
-        currentPath === null ? "underline" : "no-underline"
-      }`}
+      className={`svg-parent ${currentPath === null ? "underline" : "no-underline"
+        }`}
     >
       <svg
         className="stroke-white w-5 h-auto stroke-[1.5] "
