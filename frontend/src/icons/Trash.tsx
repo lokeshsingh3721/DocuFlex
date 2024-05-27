@@ -1,13 +1,17 @@
 import { useLocation } from "react-router";
+import { useNavigationContext } from "../context/NavigationProvider";
 
 const Trash = () => {
   const location = useLocation();
+  const { setPageNavigation } = useNavigationContext()
   const currentPath = location.pathname.substring(1);
   return (
     <span
-      className={`svg-parent ${
-        currentPath === "trash" ? "underline" : "no-underline"
-      }`}
+      onClick={() =>
+        setPageNavigation(null)
+      }
+      className={`svg-parent ${currentPath === "trash" ? "underline" : "no-underline"
+        }`}
     >
       <svg
         className="w-5 h-auto"

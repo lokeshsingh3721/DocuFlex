@@ -1,0 +1,39 @@
+
+import { useNavigationContext } from "../context/NavigationProvider";
+import { PageNavigation } from "../types";
+
+const Breadcrumb = () => {
+
+  const { pageNavigation, setPageNavigation } = useNavigationContext()
+
+
+  function clearNavigation(path: string, id: string) {
+    setPageNavigation((page) => {
+      const arr: PageNavigation[] = [];
+
+      for (const el of page || []) {
+        arr.push({ path: el.path, id: el.id });
+        if (el.path === path && el.id === id) {
+          break;
+        }
+      }
+
+      if (arr.length > 0) {
+        return arr;
+      }
+      return null;
+    });
+  }
+
+  return (
+    <div className="ml-40 flex gap-1 py-10">
+      {pageNavigation?.map((page) => {
+        return <p> <a onClick={() => {
+          clearNavigation(page.path, page.id)
+        }} className='underline' href="_">{page.path}</a> / </p>
+      })}
+    </div>
+  );
+};
+
+export default Breadcrumb;

@@ -20,6 +20,14 @@ const schema = new Schema({
     type: Date,
     default: Date.now(),
   },
+  lastEdit: {
+    type: Date,
+    default: Date.now()
+  },
+  size: {
+    type: Number,
+    required: true
+  }
 });
 
 export default mongoose.model("Directory", schema);

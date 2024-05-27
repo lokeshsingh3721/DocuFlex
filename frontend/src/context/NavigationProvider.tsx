@@ -1,5 +1,3 @@
-
-
 import { createContext, useContext, useState, ReactNode } from "react";
 import { PageNavigation, NavigationContextType } from "../types";
 
