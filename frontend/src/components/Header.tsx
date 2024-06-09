@@ -32,7 +32,7 @@ const Header = () => {
       <div className={`${open ? ' w-36  mb-5 mx-auto flex ml-[82%] flex-col  border-2 border-blue-500 p-2 gap-2 rounded' : 'hidden'} `}>
         <input type="text" placeholder="folder name..." value={newFolder} onChange={
           (e) => {
-            setNewFolder(e.target.value
+            setNewFolder(e.target.value)
           }
         } className="border-[1px] border-gray-400 p-1" />
         <button onClick={
