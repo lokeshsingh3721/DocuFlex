@@ -7,8 +7,13 @@ import router from "./routes/index.js";
 import WebSocket, { WebSocketServer } from "ws";
 
 type RecentFiles = {
+  _id: string;
   name: string;
-  timestamp: string;
+  createdAt: string;
+  isFolder: boolean;
+  parent: string;
+  last_edit: string;
+  size: string;
 };
 
 const PORT = process.env.SERVER_PORT || 4000;
@@ -24,7 +29,7 @@ const PORT = process.env.SERVER_PORT || 4000;
 
   await dbConnect();
 
-  const server = app.listen(4000, () => {
+  const server = app.listen(PORT, () => {
     console.log("server is listening to the port 4000");
   });
   const wss = new WebSocketServer({ server: server });
@@ -32,16 +37,22 @@ const PORT = process.env.SERVER_PORT || 4000;
 
   wss.on("connection", (ws) => {
     console.log("new client is connected ");
-    ws.send(JSON.stringify({ type: "initial", files: recentFiles }));
 
     ws.on("message", (message: any) => {
       const data = JSON.parse(message);
       if (data.type === "addFile") {
         const newFile = {
+          _id: data.id,
           name: data.name,
-          timestamp: new Date().toISOString(),
+          createdAt: data.createdAt,
+          isFolder: data.isFolder,
+          parent: data.parent,
+          last_edit: data.last_edit,
+          size: data.size,
         };
         recentFiles = [newFile, ...recentFiles].slice(0, 10);
+
+        console.log(recentFiles);
 
         wss.clients.forEach((client) => {
           if (client.readyState === WebSocket.OPEN) {

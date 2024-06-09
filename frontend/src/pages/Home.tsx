@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import getFolders from "../utils/getFolder";
 import { FolderType } from "../types";
 import Table from "../components/Table";
-
-import { Files } from "../data";
+import { useWebSocket } from "../context/WebsocketProvider";
 
 const Home = () => {
   const [folders, setFolders] = useState<FolderType[] | null | undefined>(
     undefined
   );
+
+  const recentFiles = useWebSocket()?.recentFiles;
 
   useEffect(() => {
     async function init(): Promise<void> {
@@ -86,8 +87,11 @@ const Home = () => {
           <p>Sort:A-Z</p>
         </div>
       </div>
-
-      <Table files={Files} />
+      {recentFiles ? (
+        <Table files={recentFiles} />
+      ) : (
+        <p className="text-center font-bold text-xl">No recent files </p>
+      )}
     </>
   );
 };

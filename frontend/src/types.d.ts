@@ -6,6 +6,7 @@ export type FolderType = {
   parent: string;
   last_edit: string;
   size: string;
+  type?: string;
 };
 
 type PageNavigation = {
@@ -18,4 +19,15 @@ type NavigationContextType = {
   setPageNavigation: React.Dispatch<
     React.SetStateAction<PageNavigation[] | null>
   >;
+};
+
+type WebSocketContextType = {
+  recentFiles: FolderType[] | null;
+  sendFile: (fileData: FolderType) => void;
+};
+
+export type RecentFileType = {
+  name: string;
+  _id: string;
+  timestamp: string;
 };
