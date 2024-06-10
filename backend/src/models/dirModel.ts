@@ -22,12 +22,12 @@ const schema = new Schema({
   },
   lastEdit: {
     type: Date,
-    default: Date.now()
+    default: Date.now(),
   },
   size: {
     type: Number,
-    required: true
-  }
+    required: true,
+  },
 });
 
 export default mongoose.model("Directory", schema);

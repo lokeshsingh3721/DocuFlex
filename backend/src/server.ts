@@ -1,4 +1,4 @@
-import express from "express";
+import express, { json } from "express";
 import http from "http";
 import cors from "cors";
 import morgan from "morgan";
@@ -41,8 +41,8 @@ const PORT = process.env.SERVER_PORT || 4000;
     ws.on("message", (message: any) => {
       const data = JSON.parse(message);
       if (data.type === "addFile") {
-        const newFile = {
-          _id: data.id,
+        const newFile: RecentFiles = {
+          _id: data._id,
           name: data.name,
           createdAt: data.createdAt,
           isFolder: data.isFolder,
@@ -50,9 +50,13 @@ const PORT = process.env.SERVER_PORT || 4000;
           last_edit: data.last_edit,
           size: data.size,
         };
-        recentFiles = [newFile, ...recentFiles].slice(0, 10);
 
-        console.log(recentFiles);
+        const hasFile = recentFiles.some((el) => el._id == newFile._id);
+
+        if (!hasFile) {
+          console.log("no duplicate");
+          recentFiles = [newFile, ...recentFiles].slice(0, 10);
+        }
 
         wss.clients.forEach((client) => {
           if (client.readyState === WebSocket.OPEN) {

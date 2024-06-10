@@ -12,34 +12,40 @@ import { z } from "zod";
 const createDirValidation = z.object({
     name: z.string(),
     isFolder: z.boolean(),
-    parent: z.string().nullable(),
+    size: z.number(), // size can be string or undefined
+    parent: z.string().optional(), // parent can be string or undefined
+    lastEdit: z.date().optional(), // lastEdit can be date or undefined
+    createdAt: z.date().optional(), // createdAt can be date or undefined
 });
 export const createDir = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, isFolder, parent } = req.body;
+        const { name, isFolder, size, parent, lastEdit, createdAt } = req.body;
         if (parent) {
-            const parentExist = yield Directory.findById({
-                _id: parent,
-            });
+            const parentExist = yield Directory.findById(parent);
             if (!parentExist) {
                 return res.status(404).json({
-                    sucess: false,
-                    message: "parent doesnt exist ",
+                    success: false,
+                    message: "Parent doesn't exist",
                 });
             }
         }
         // zod validation
-        const { success, data } = createDirValidation.safeParse({
+        const parseResult = createDirValidation.safeParse({
             name,
             isFolder,
+            size,
             parent,
+            lastEdit,
+            createdAt,
         });
-        if (!success) {
-            return res.status(404).json({
+        if (!parseResult.success) {
+            return res.status(400).json({
                 success: false,
-                message: "invalid input",
+                message: "Invalid input",
+                errors: parseResult.error.errors,
             });
         }
+        const { data } = parseResult;
         const directoryExist = yield Directory.findOne({
             name,
             isFolder,
@@ -48,14 +54,10 @@ export const createDir = (req, res) => __awaiter(void 0, void 0, void 0, functio
         if (directoryExist) {
             return res.status(400).json({
                 success: false,
-                message: "already exists",
+                message: "Directory already exists",
             });
         }
-        const directory = yield Directory.create({
-            name,
-            isFolder,
-            parent,
-        });
+        const directory = yield Directory.create(data);
         res.status(200).json({
             success: true,
             data: directory,
@@ -68,6 +70,10 @@ export const createDir = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 message: error.message,
             });
         }
+        return res.status(500).json({
+            success: false,
+            message: "An unexpected error occurred",
+        });
     }
 });
 export const getAllRootDir = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

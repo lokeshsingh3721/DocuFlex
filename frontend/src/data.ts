@@ -48,7 +48,7 @@ export const Folders: FolderType[] = [
   },
   {
     _id: "6",
-    name: "Project Proposal.pdf",
+    name: " Proposal.pdf",
     createdAt: "2023-02-05T10:00:00Z",
     isFolder: false,
     parent: "3",
@@ -68,7 +68,7 @@ export const Files: FolderType[] = [
     size: "12 KB",
   },
   {
-    _id: "1",
+    _id: "2",
     name: "notes.txt",
     createdAt: "2023-01-15T09:30:00Z",
     isFolder: false,
@@ -77,7 +77,7 @@ export const Files: FolderType[] = [
     size: "12 KB",
   },
   {
-    _id: "1",
+    _id: "3",
     name: "DSA.doc",
     createdAt: "2023-01-15T09:30:00Z",
     isFolder: false,
