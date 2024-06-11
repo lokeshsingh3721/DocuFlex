@@ -1,5 +1,5 @@
 import Directory from "../models/dirModel.js";
-import { any, string, z } from "zod";
+import { z } from "zod";
 
 import { Request, Response } from "express";
 import mongoose from "mongoose";
@@ -9,10 +9,10 @@ type ObjectId = mongoose.Types.ObjectId;
 const createDirValidation = z.object({
   name: z.string(),
   isFolder: z.boolean(),
-  size: z.number(), // size can be string or undefined
-  parent: z.string().optional(), // parent can be string or undefined
-  lastEdit: z.date().optional(), // lastEdit can be date or undefined
-  createdAt: z.date().optional(), // createdAt can be date or undefined
+  size: z.number(),
+  parent: z.string().optional(),
+  lastEdit: z.date().optional(),
+  createdAt: z.date().optional(),
 });
 
 export const createDir = async (req: Request, res: Response) => {

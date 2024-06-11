@@ -32,4 +32,4 @@ const schema = new Schema({
         required: true,
     },
 });
-export default mongoose.model("Directory", schema);
+export default mongoose.model("Recent", schema);

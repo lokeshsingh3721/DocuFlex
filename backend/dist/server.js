@@ -30,7 +30,6 @@ const PORT = process.env.SERVER_PORT || 4000;
         console.log("new client is connected ");
         ws.on("message", (message) => {
             const data = JSON.parse(message);
-            console.log(data);
             if (data.type === "addFile") {
                 const newFile = {
                     _id: data._id,
@@ -45,11 +44,9 @@ const PORT = process.env.SERVER_PORT || 4000;
                 if (!hasFile) {
                     recentFiles = [newFile, ...recentFiles].slice(0, 10);
                 }
-                wss.clients.forEach((client) => {
-                    if (client.readyState === WebSocket.OPEN) {
-                        client.send(JSON.stringify({ type: "newFile", files: recentFiles }));
-                    }
-                });
+                if (ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({ type: "newFile", files: recentFiles }));
+                }
             }
         });
         ws.on("close", () => {

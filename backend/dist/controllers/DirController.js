@@ -12,10 +12,10 @@ import { z } from "zod";
 const createDirValidation = z.object({
     name: z.string(),
     isFolder: z.boolean(),
-    size: z.number(), // size can be string or undefined
-    parent: z.string().optional(), // parent can be string or undefined
-    lastEdit: z.date().optional(), // lastEdit can be date or undefined
-    createdAt: z.date().optional(), // createdAt can be date or undefined
+    size: z.number(),
+    parent: z.string().optional(),
+    lastEdit: z.date().optional(),
+    createdAt: z.date().optional(),
 });
 export const createDir = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
