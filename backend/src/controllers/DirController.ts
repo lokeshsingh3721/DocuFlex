@@ -1,6 +1,6 @@
 import Directory from "../models/dirModel.js";
 import { z } from "zod";
-
+import User from "../models/userModel.js";
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 
@@ -13,14 +13,23 @@ const createDirValidation = z.object({
   parent: z.string().optional(),
   lastEdit: z.date().optional(),
   createdAt: z.date().optional(),
+  userId: z.string(),
 });
 
 export const createDir = async (req: Request, res: Response) => {
   try {
-    const { name, isFolder, size, parent, lastEdit, createdAt } = req.body;
+    // zod validation
+    const { success, data } = createDirValidation.safeParse(req.body);
 
-    if (parent) {
-      const parentExist = await Directory.findById(parent);
+    if (!success) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid input",
+      });
+    }
+
+    if (data.parent) {
+      const parentExist = await Directory.findById(data.parent);
       if (!parentExist) {
         return res.status(404).json({
           success: false,
@@ -29,30 +38,20 @@ export const createDir = async (req: Request, res: Response) => {
       }
     }
 
-    // zod validation
-    const parseResult = createDirValidation.safeParse({
-      name,
-      isFolder,
-      size,
-      parent,
-      lastEdit,
-      createdAt,
+    // check user exist or not
+    const userExist = await User.findById({
+      _id: data.userId,
     });
-
-    if (!parseResult.success) {
-      return res.status(400).json({
+    if (!userExist) {
+      return res.status(401).json({
         success: false,
-        message: "Invalid input",
-        errors: parseResult.error.errors,
+        message: "user doesnt exist ",
       });
     }
 
-    const { data } = parseResult;
-
     const directoryExist = await Directory.findOne({
-      name,
-      isFolder,
-      parent,
+      name: data.name,
+      parent: data.parent,
     });
 
     if (directoryExist) {

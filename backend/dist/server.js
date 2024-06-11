@@ -13,6 +13,7 @@ import morgan from "morgan";
 import dbConnect from "./db.js";
 import router from "./routes/index.js";
 import WebSocket, { WebSocketServer } from "ws";
+import { checkHasFiles, createFile, getFilesByUserId, } from "./utils/RecentFunctions.js";
 const PORT = process.env.SERVER_PORT || 4000;
 (() => __awaiter(void 0, void 0, void 0, function* () {
     const app = express();
@@ -25,11 +26,16 @@ const PORT = process.env.SERVER_PORT || 4000;
         console.log("server is listening to the port 4000");
     });
     const wss = new WebSocketServer({ server: server });
-    let recentFiles = [];
     wss.on("connection", (ws) => {
         console.log("new client is connected ");
-        ws.on("message", (message) => {
+        ws.on("message", (message) => __awaiter(void 0, void 0, void 0, function* () {
             const data = JSON.parse(message);
+            // send the initial data
+            if (data.type === "initial") {
+                const files = yield getFilesByUserId(data.userId);
+                ws.send(JSON.stringify({ type: "initial", files: files }));
+                return;
+            }
             if (data.type === "addFile") {
                 const newFile = {
                     _id: data._id,
@@ -39,16 +45,17 @@ const PORT = process.env.SERVER_PORT || 4000;
                     parent: data.parent,
                     last_edit: data.last_edit,
                     size: data.size,
+                    userId: data.userId,
                 };
-                const hasFile = recentFiles.some((el) => el._id == newFile._id);
-                if (!hasFile) {
-                    recentFiles = [newFile, ...recentFiles].slice(0, 10);
-                }
-                if (ws.readyState === WebSocket.OPEN) {
-                    ws.send(JSON.stringify({ type: "newFile", files: recentFiles }));
+                // if already exist file no need to add in recent
+                const hasFile = yield checkHasFiles(newFile._id);
+                if (ws.readyState === WebSocket.OPEN && !hasFile) {
+                    yield createFile(newFile);
+                    const files = yield getFilesByUserId(newFile.userId);
+                    ws.send(JSON.stringify({ type: "newFile", files }));
                 }
             }
-        });
+        }));
         ws.on("close", () => {
             console.log("connection disconnected ");
         });

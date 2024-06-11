@@ -1,10 +1,14 @@
-import express, { json } from "express";
-import http from "http";
+import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import dbConnect from "./db.js";
 import router from "./routes/index.js";
 import WebSocket, { WebSocketServer } from "ws";
+import {
+  checkHasFiles,
+  createFile,
+  getFilesByUserId,
+} from "./utils/RecentFunctions.js";
 
 type RecentFiles = {
   _id: string;
@@ -14,6 +18,7 @@ type RecentFiles = {
   parent: string;
   last_edit: string;
   size: string;
+  userId: string;
 };
 
 const PORT = process.env.SERVER_PORT || 4000;
@@ -33,13 +38,18 @@ const PORT = process.env.SERVER_PORT || 4000;
     console.log("server is listening to the port 4000");
   });
   const wss = new WebSocketServer({ server: server });
-  let recentFiles: RecentFiles[] = [];
 
   wss.on("connection", (ws) => {
     console.log("new client is connected ");
 
-    ws.on("message", (message: any) => {
+    ws.on("message", async (message: any) => {
       const data = JSON.parse(message);
+      // send the initial data
+      if (data.type === "initial") {
+        const files = await getFilesByUserId(data.userId);
+        ws.send(JSON.stringify({ type: "initial", files: files }));
+        return;
+      }
       if (data.type === "addFile") {
         const newFile: RecentFiles = {
           _id: data._id,
@@ -49,16 +59,17 @@ const PORT = process.env.SERVER_PORT || 4000;
           parent: data.parent,
           last_edit: data.last_edit,
           size: data.size,
+          userId: data.userId,
         };
 
-        const hasFile = recentFiles.some((el) => el._id == newFile._id);
+        // if already exist file no need to add in recent
 
-        if (!hasFile) {
-          recentFiles = [newFile, ...recentFiles].slice(0, 10);
-        }
+        const hasFile = await checkHasFiles(newFile._id);
 
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify({ type: "newFile", files: recentFiles }));
+        if (ws.readyState === WebSocket.OPEN && !hasFile) {
+          await createFile(newFile);
+          const files = await getFilesByUserId(newFile.userId);
+          ws.send(JSON.stringify({ type: "newFile", files }));
         }
       }
     });
