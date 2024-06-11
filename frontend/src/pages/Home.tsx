@@ -54,9 +54,7 @@ const Home = () => {
       <div className="flex gap-2 flex-wrap  items-center">
         {folders ? (
           folders.map((folder) => {
-            return (
-              <Folder key={folder._id} name={folder.name} id={folder._id} />
-            );
+            return <Folder key={folder._id} folder={folder} />;
           })
         ) : (
           <h1 className="font-bold mx-auto text-lg">No folders are there </h1>

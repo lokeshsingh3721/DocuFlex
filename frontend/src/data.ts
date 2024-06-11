@@ -7,7 +7,7 @@ export const Folders: FolderType[] = [
     createdAt: "2023-01-15T09:30:00Z",
     isFolder: true,
     parent: "0",
-    last_edit: "2023-05-10T12:45:00Z",
+    lastEdit: "2023-05-10T12:45:00Z",
     size: "2GB",
   },
   {
@@ -16,7 +16,7 @@ export const Folders: FolderType[] = [
     createdAt: "2023-02-20T14:15:00Z",
     isFolder: true,
     parent: "0",
-    last_edit: "2023-04-22T10:00:00Z",
+    lastEdit: "2023-04-22T10:00:00Z",
     size: "5GB",
   },
   {
@@ -25,7 +25,7 @@ export const Folders: FolderType[] = [
     createdAt: "2023-03-10T08:00:00Z",
     isFolder: true,
     parent: "0",
-    last_edit: "2023-05-18T16:30:00Z",
+    lastEdit: "2023-05-18T16:30:00Z",
     size: "3GB",
   },
   {
@@ -34,7 +34,7 @@ export const Folders: FolderType[] = [
     createdAt: "2023-03-25T11:00:00Z",
     isFolder: false,
     parent: "2",
-    last_edit: "2023-04-01T09:00:00Z",
+    lastEdit: "2023-04-01T09:00:00Z",
     size: "1.5MB",
   },
   {
@@ -43,7 +43,7 @@ export const Folders: FolderType[] = [
     createdAt: "2023-04-12T13:30:00Z",
     isFolder: false,
     parent: "3",
-    last_edit: "2023-05-01T15:20:00Z",
+    lastEdit: "2023-05-01T15:20:00Z",
     size: "200KB",
   },
   {
@@ -52,7 +52,7 @@ export const Folders: FolderType[] = [
     createdAt: "2023-02-05T10:00:00Z",
     isFolder: false,
     parent: "3",
-    last_edit: "2023-05-15T14:10:00Z",
+    lastEdit: "2023-05-15T14:10:00Z",
     size: "500KB",
   },
 ];
@@ -64,7 +64,7 @@ export const Files: FolderType[] = [
     createdAt: "2023-01-15T09:30:00Z",
     isFolder: false,
     parent: "0",
-    last_edit: "2023-05-10T12:45:00Z",
+    lastEdit: "2023-05-10T12:45:00Z",
     size: "12 KB",
   },
   {
@@ -73,7 +73,7 @@ export const Files: FolderType[] = [
     createdAt: "2023-01-15T09:30:00Z",
     isFolder: false,
     parent: "0",
-    last_edit: "2023-05-10T12:45:00Z",
+    lastEdit: "2023-05-10T12:45:00Z",
     size: "12 KB",
   },
   {
@@ -82,7 +82,7 @@ export const Files: FolderType[] = [
     createdAt: "2023-01-15T09:30:00Z",
     isFolder: false,
     parent: "0",
-    last_edit: "2023-05-10T12:45:00Z",
+    lastEdit: "2023-05-10T12:45:00Z",
     size: "12 KB",
   },
 ];

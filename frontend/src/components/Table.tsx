@@ -34,7 +34,7 @@ const Table = ({ files }: { files: FolderType[] }) => {
           >
             <td className="py-2 px-4 border-b">{file?.name}</td>
             <td className="py-2 px-4 border-b">
-              {file?.last_edit ? file?.last_edit : "2024-05-21 14:33"}
+              {file ? file.lastEdit : "2024-05-21 14:33"}
             </td>
             <td className="py-2 px-4 border-b">
               {file?.size ? file?.size + "KB" : "15 KB"}

@@ -40,6 +40,7 @@ const PORT = process.env.SERVER_PORT || 4000;
 
     ws.on("message", (message: any) => {
       const data = JSON.parse(message);
+      console.log(data);
       if (data.type === "addFile") {
         const newFile: RecentFiles = {
           _id: data._id,
@@ -54,7 +55,6 @@ const PORT = process.env.SERVER_PORT || 4000;
         const hasFile = recentFiles.some((el) => el._id == newFile._id);
 
         if (!hasFile) {
-          console.log("no duplicate");
           recentFiles = [newFile, ...recentFiles].slice(0, 10);
         }
 

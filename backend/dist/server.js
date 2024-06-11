@@ -30,6 +30,7 @@ const PORT = process.env.SERVER_PORT || 4000;
         console.log("new client is connected ");
         ws.on("message", (message) => {
             const data = JSON.parse(message);
+            console.log(data);
             if (data.type === "addFile") {
                 const newFile = {
                     _id: data._id,
@@ -42,7 +43,6 @@ const PORT = process.env.SERVER_PORT || 4000;
                 };
                 const hasFile = recentFiles.some((el) => el._id == newFile._id);
                 if (!hasFile) {
-                    console.log("no duplicate");
                     recentFiles = [newFile, ...recentFiles].slice(0, 10);
                 }
                 wss.clients.forEach((client) => {

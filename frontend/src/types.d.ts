@@ -4,7 +4,7 @@ export type FolderType = {
   createdAt: string;
   isFolder: boolean;
   parent: string;
-  last_edit: string;
+  lastEdit: string;
   size: string;
   type?: string;
 };
