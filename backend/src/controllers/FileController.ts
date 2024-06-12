@@ -1,4 +1,5 @@
 import express from "express";
+import Directory from "../models/dirModel.js";
 import { Request, Response } from "express";
 import File from "../models/fileModel.js";
 import { z } from "zod";
@@ -47,6 +48,73 @@ export const createFile = async (req: Request, res: Response) => {
       success: true,
       message: "file created successfully",
       file,
+    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(501).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+};
+
+export const getFilesByParent = async (req: Request, res: Response) => {
+  try {
+    const { id: parent } = req.params;
+
+    console.log("parentid", parent);
+    if (typeof parent != "string") {
+      return res.status(404).json({
+        success: false,
+        message: "invalid input ",
+      });
+    }
+    // check parent exist or not
+    const hasParent = await Directory.findById({
+      _id: parent,
+    });
+    if (!hasParent) {
+      res.status(404).json({
+        success: false,
+        message: "parent doesnt not exist ",
+      });
+    }
+    // get all the files
+    const files = await File.find({
+      parent,
+    });
+    res.status(200).json({
+      success: true,
+      message: "files fetched successfully",
+      files,
+    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(501).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+};
+
+export const getFilesByType = async (req: Request, res: Response) => {
+  try {
+    const { filetype } = req.params;
+    if (typeof filetype != "string") {
+      return res.status(404).json({
+        success: false,
+        message: "invalid input ",
+      });
+    }
+    const files = await File.find({
+      fileType: filetype,
+    });
+    return res.status(200).json({
+      success: true,
+      message: "files fetched successfully",
+      files,
     });
   } catch (error: unknown) {
     if (error instanceof Error) {

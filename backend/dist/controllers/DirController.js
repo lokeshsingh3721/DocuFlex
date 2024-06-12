@@ -112,7 +112,7 @@ export const getDirById = (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
         res.status(200).json({
             success: true,
-            data: items,
+            folders: items,
         });
     }
     catch (error) {

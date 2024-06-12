@@ -118,7 +118,7 @@ export const getDirById = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      data: items,
+      folders: items,
     });
   } catch (error) {
     if (error instanceof Error) {

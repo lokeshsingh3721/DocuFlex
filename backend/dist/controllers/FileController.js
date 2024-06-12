@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import Directory from "../models/dirModel.js";
 import File from "../models/fileModel.js";
 import { z } from "zod";
 import { getFileType } from "../utils/getFileType.js";
@@ -50,6 +51,72 @@ export const createFile = (req, res) => __awaiter(void 0, void 0, void 0, functi
             success: true,
             message: "file created successfully",
             file,
+        });
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            res.status(501).json({
+                success: false,
+                message: error.message,
+            });
+        }
+    }
+});
+export const getFilesByParent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id: parent } = req.params;
+        console.log("parentid", parent);
+        if (typeof parent != "string") {
+            return res.status(404).json({
+                success: false,
+                message: "invalid input ",
+            });
+        }
+        // check parent exist or not
+        const hasParent = yield Directory.findById({
+            _id: parent,
+        });
+        if (!hasParent) {
+            res.status(404).json({
+                success: false,
+                message: "parent doesnt not exist ",
+            });
+        }
+        // get all the files
+        const files = yield File.find({
+            parent,
+        });
+        res.status(200).json({
+            success: true,
+            message: "files fetched successfully",
+            files,
+        });
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            res.status(501).json({
+                success: false,
+                message: error.message,
+            });
+        }
+    }
+});
+export const getFilesByType = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { filetype } = req.params;
+        if (typeof filetype != "string") {
+            return res.status(404).json({
+                success: false,
+                message: "invalid input ",
+            });
+        }
+        const files = yield File.find({
+            fileType: filetype,
+        });
+        return res.status(200).json({
+            success: true,
+            message: "files fetched successfully",
+            files,
         });
     }
     catch (error) {

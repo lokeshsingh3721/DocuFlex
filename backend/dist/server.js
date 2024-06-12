@@ -41,9 +41,8 @@ const PORT = process.env.SERVER_PORT || 4000;
                     _id: data._id,
                     name: data.name,
                     createdAt: data.createdAt,
-                    isFolder: data.isFolder,
                     parent: data.parent,
-                    last_edit: data.last_edit,
+                    lastEdit: data.last_edit,
                     size: data.size,
                     userId: data.userId,
                 };

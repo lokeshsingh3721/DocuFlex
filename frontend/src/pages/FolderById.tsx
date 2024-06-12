@@ -3,9 +3,9 @@ import Folder from "../components/Folder";
 import { useEffect, useState } from "react";
 import { FolderType } from "../types";
 import Table from "../components/Table";
-import getItemsByParentId from "../utils/getItemsByParentId";
-
 import { useParams } from "react-router-dom";
+import getFilesByParentId from "../utils/getFilesByParentId";
+import getFoldersByParentId from "../utils/getFoldersByParent";
 
 type params = {
   name: string;
@@ -14,29 +14,25 @@ type params = {
 
 const FolderById = () => {
   const { id } = useParams() as params;
-  const [items, setItems] = useState<FolderType[] | null | undefined>(
-    undefined
-  );
   const [folders, setFolders] = useState<FolderType[] | undefined>(undefined);
   const [files, setFiles] = useState<FolderType[] | undefined>(undefined);
 
   useEffect(() => {
     async function init(): Promise<void> {
-      const fetchedItems = await getItemsByParentId(id);
-      setItems(fetchedItems);
+      const [files, folders] = await Promise.all([
+        getFilesByParentId(id),
+        getFoldersByParentId(id),
+      ]);
+      if (folders && files) {
+        setFolders(folders);
+        setFiles(files);
+      }
     }
     init();
   }, [id]);
 
-  useEffect(() => {
-    if (items) {
-      setFolders(items.filter((item) => item.isFolder === true));
-      setFiles(items.filter((item) => item.isFolder === false));
-    }
-  }, [items]);
-
-  if (items === undefined)
-    return <h1 className="text-center  text-3xl "> Loading... </h1>;
+  // if (items === undefined)
+  //   return <h1 className="text-center  text-3xl "> Loading... </h1>;
 
   return (
     <>

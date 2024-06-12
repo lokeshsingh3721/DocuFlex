@@ -3,10 +3,6 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const schema = new Schema({
-  isFolder: {
-    type: Boolean,
-    required: true,
-  },
   name: {
     type: String,
     required: true,
