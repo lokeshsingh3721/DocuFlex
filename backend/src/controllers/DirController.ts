@@ -3,13 +3,12 @@ import { z } from "zod";
 import User from "../models/userModel.js";
 import { Request, Response } from "express";
 import mongoose from "mongoose";
+import { getFileType } from "../utils/getFileType.js";
 
 type ObjectId = mongoose.Types.ObjectId;
 
 const createDirValidation = z.object({
   name: z.string(),
-  isFolder: z.boolean(),
-  size: z.number(),
   parent: z.string().optional(),
   lastEdit: z.date().optional(),
   createdAt: z.date().optional(),
@@ -61,6 +60,9 @@ export const createDir = async (req: Request, res: Response) => {
       });
     }
 
+    const fileType = getFileType(data.name);
+    // @ts-ignore
+    data.fileType = fileType;
     const directory = await Directory.create(data);
 
     res.status(200).json({

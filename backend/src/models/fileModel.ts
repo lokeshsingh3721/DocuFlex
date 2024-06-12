@@ -20,11 +20,20 @@ const schema = new Schema({
     type: Date,
     default: Date.now(),
   },
+  size: {
+    type: Number,
+    required: true,
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
+  fileType: {
+    type: String,
+    enum: ["image", "video", "document", "others"],
+    required: true,
+  },
 });
 
-export default mongoose.model("Directory", schema);
+export default mongoose.model("File", schema);
