@@ -5,6 +5,8 @@ import Videos from "./pages/Video";
 import Images from "./pages/Images";
 import FolderbyId from "./pages/FolderById";
 import Documents from "./pages/Documents";
+import Login from "./pages/Login";
+import SignUp from "./pages/Signup";
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +17,8 @@ function App() {
           <Route path="/videos" element={<Videos />} />
           <Route path="/images" element={<Images />} />
           <Route path="/:name/:id" element={<FolderbyId />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </Layout>
     </BrowserRouter>
