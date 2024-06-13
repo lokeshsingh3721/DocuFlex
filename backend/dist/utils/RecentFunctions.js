@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import Recent from "../models/recentModel.js";
+import User from "../models/userModel.js";
 const getFilesByUserId = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     const files = yield Recent.find({
         userId,
@@ -18,10 +19,16 @@ const checkHasFiles = (_id) => __awaiter(void 0, void 0, void 0, function* () {
     const hasFile = yield Recent.findById({
         _id,
     });
-    return hasFile;
+    return hasFile ? true : false;
 });
 const createFile = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const files = yield Recent.create(data);
     return files;
 });
-export { getFilesByUserId, checkHasFiles, createFile };
+const checkUserExist = (_id) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield User.findById({
+        _id,
+    });
+    return user;
+});
+export { checkUserExist, getFilesByUserId, checkHasFiles, createFile };

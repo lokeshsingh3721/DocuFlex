@@ -13,7 +13,7 @@ import morgan from "morgan";
 import dbConnect from "./db.js";
 import router from "./routes/index.js";
 import WebSocket, { WebSocketServer } from "ws";
-import { checkHasFiles, createFile, getFilesByUserId, } from "./utils/RecentFunctions.js";
+import { checkHasFiles, checkUserExist, createFile, getFilesByUserId, } from "./utils/RecentFunctions.js";
 const PORT = process.env.SERVER_PORT || 4000;
 (() => __awaiter(void 0, void 0, void 0, function* () {
     const app = express();
@@ -30,6 +30,14 @@ const PORT = process.env.SERVER_PORT || 4000;
         console.log("new client is connected ");
         ws.on("message", (message) => __awaiter(void 0, void 0, void 0, function* () {
             const data = JSON.parse(message);
+            // user validation check
+            if (!data.userId) {
+                return ws.send(JSON.stringify({ type: "error", message: "invalid user " }));
+            }
+            const userExist = yield checkUserExist(data.userId);
+            if (!userExist) {
+                return ws.send(JSON.stringify({ type: "error", message: "user doesnot exist " }));
+            }
             // send the initial data
             if (data.type === "initial") {
                 const files = yield getFilesByUserId(data.userId);

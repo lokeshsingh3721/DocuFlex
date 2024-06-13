@@ -1,4 +1,5 @@
 import Recent from "../models/recentModel.js";
+import User from "../models/userModel.js";
 
 const getFilesByUserId = async (userId: string) => {
   const files = await Recent.find({
@@ -11,7 +12,7 @@ const checkHasFiles = async (_id: string) => {
   const hasFile = await Recent.findById({
     _id,
   });
-  return hasFile;
+  return hasFile ? true : false;
 };
 
 const createFile = async (data: any) => {
@@ -19,4 +20,11 @@ const createFile = async (data: any) => {
   return files;
 };
 
-export { getFilesByUserId, checkHasFiles, createFile };
+const checkUserExist = async (_id: string) => {
+  const user = await User.findById({
+    _id,
+  });
+  return user;
+};
+
+export { checkUserExist, getFilesByUserId, checkHasFiles, createFile };

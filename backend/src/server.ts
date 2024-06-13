@@ -6,6 +6,7 @@ import router from "./routes/index.js";
 import WebSocket, { WebSocketServer } from "ws";
 import {
   checkHasFiles,
+  checkUserExist,
   createFile,
   getFilesByUserId,
 } from "./utils/RecentFunctions.js";
@@ -43,6 +44,18 @@ const PORT = process.env.SERVER_PORT || 4000;
 
     ws.on("message", async (message: any) => {
       const data = JSON.parse(message);
+      // user validation check
+      if (!data.userId) {
+        return ws.send(
+          JSON.stringify({ type: "error", message: "invalid user " })
+        );
+      }
+      const userExist = await checkUserExist(data.userId);
+      if (!userExist) {
+        return ws.send(
+          JSON.stringify({ type: "error", message: "user doesnot exist " })
+        );
+      }
       // send the initial data
       if (data.type === "initial") {
         const files = await getFilesByUserId(data.userId);

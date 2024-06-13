@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import Directory from "../models/dirModel.js";
 import { z } from "zod";
 import User from "../models/userModel.js";
-import { getFileType } from "../utils/getFileType.js";
 const createDirValidation = z.object({
     name: z.string(),
     parent: z.string().optional(),
@@ -21,7 +20,15 @@ const createDirValidation = z.object({
 export const createDir = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // zod validation
-        const { success, data } = createDirValidation.safeParse(req.body);
+        const userId = req.headers["userId"];
+        const { name, parent, lastEdit, createdAt } = req.body;
+        const { success, data } = createDirValidation.safeParse({
+            name,
+            parent,
+            lastEdit,
+            createdAt,
+            userId,
+        });
         if (!success) {
             return res.status(400).json({
                 success: false,
@@ -29,7 +36,9 @@ export const createDir = (req, res) => __awaiter(void 0, void 0, void 0, functio
             });
         }
         if (data.parent) {
-            const parentExist = yield Directory.findById(data.parent);
+            const parentExist = yield Directory.findById({
+                parent: data.parent,
+            });
             if (!parentExist) {
                 return res.status(404).json({
                     success: false,
@@ -49,7 +58,7 @@ export const createDir = (req, res) => __awaiter(void 0, void 0, void 0, functio
         }
         const directoryExist = yield Directory.findOne({
             name: data.name,
-            parent: data.parent,
+            parent: data.parent ? data.parent : null,
         });
         if (directoryExist) {
             return res.status(400).json({
@@ -57,9 +66,6 @@ export const createDir = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 message: "Directory already exists",
             });
         }
-        const fileType = getFileType(data.name);
-        // @ts-ignore
-        data.fileType = fileType;
         const directory = yield Directory.create(data);
         res.status(200).json({
             success: true,
@@ -81,8 +87,10 @@ export const createDir = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 export const getAllRootDir = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const userId = req.headers["userId"];
         const allDir = yield Directory.find({
             parent: null,
+            userId,
         });
         return res.status(200).json({
             success: true,
@@ -101,6 +109,7 @@ export const getAllRootDir = (req, res) => __awaiter(void 0, void 0, void 0, fun
 export const getDirById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
+        const userId = req.headers["userId"];
         if (!id || typeof id != "string") {
             return res.status(404).json({
                 success: false,
@@ -109,6 +118,7 @@ export const getDirById = (req, res) => __awaiter(void 0, void 0, void 0, functi
         }
         const items = yield Directory.find({
             parent: id,
+            userId,
         });
         res.status(200).json({
             success: true,
@@ -136,13 +146,16 @@ export const deleteDir = (req, res) => __awaiter(void 0, void 0, void 0, functio
         // recursively delete all the  sub folders
         function deleteAll(id) {
             return __awaiter(this, void 0, void 0, function* () {
+                const userId = req.headers["userId"];
                 const subDirs = yield Directory.find({
                     parent: id,
+                    userId,
                 });
                 for (const dirs of subDirs) {
                     deleteAll(dirs._id);
                     yield Directory.deleteOne({
                         _id: dirs._id,
+                        userId,
                     });
                 }
             });
@@ -169,6 +182,7 @@ export const updateDir = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const { id } = req.params;
         const { name, parent } = req.body;
+        const userId = req.headers["userId"];
         if (!id || !parent || typeof id != "string") {
             return res.status(404).json({
                 success: false,
@@ -178,6 +192,7 @@ export const updateDir = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const alreadyExist = yield Directory.find({
             name,
             parent,
+            userId,
         });
         if (alreadyExist.length > 0) {
             return res.status(404).json({
@@ -187,6 +202,7 @@ export const updateDir = (req, res) => __awaiter(void 0, void 0, void 0, functio
         }
         const updatedDir = yield Directory.findByIdAndUpdate({
             _id: id,
+            userId,
         }, {
             name,
         }, { new: true });

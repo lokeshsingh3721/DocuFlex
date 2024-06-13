@@ -18,7 +18,15 @@ const createDirValidation = z.object({
 export const createDir = async (req: Request, res: Response) => {
   try {
     // zod validation
-    const { success, data } = createDirValidation.safeParse(req.body);
+    const userId = req.headers["userId"];
+    const { name, parent, lastEdit, createdAt } = req.body;
+    const { success, data } = createDirValidation.safeParse({
+      name,
+      parent,
+      lastEdit,
+      createdAt,
+      userId,
+    });
 
     if (!success) {
       return res.status(400).json({
@@ -28,7 +36,9 @@ export const createDir = async (req: Request, res: Response) => {
     }
 
     if (data.parent) {
-      const parentExist = await Directory.findById(data.parent);
+      const parentExist = await Directory.findById({
+        parent: data.parent,
+      });
       if (!parentExist) {
         return res.status(404).json({
           success: false,
@@ -50,7 +60,7 @@ export const createDir = async (req: Request, res: Response) => {
 
     const directoryExist = await Directory.findOne({
       name: data.name,
-      parent: data.parent,
+      parent: data.parent ? data.parent : null,
     });
 
     if (directoryExist) {
@@ -60,9 +70,6 @@ export const createDir = async (req: Request, res: Response) => {
       });
     }
 
-    const fileType = getFileType(data.name);
-    // @ts-ignore
-    data.fileType = fileType;
     const directory = await Directory.create(data);
 
     res.status(200).json({
@@ -85,8 +92,10 @@ export const createDir = async (req: Request, res: Response) => {
 
 export const getAllRootDir = async (req: Request, res: Response) => {
   try {
+    const userId = req.headers["userId"];
     const allDir = await Directory.find({
       parent: null,
+      userId,
     });
     return res.status(200).json({
       success: true,
@@ -105,7 +114,7 @@ export const getAllRootDir = async (req: Request, res: Response) => {
 export const getDirById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-
+    const userId = req.headers["userId"];
     if (!id || typeof id != "string") {
       return res.status(404).json({
         success: false,
@@ -114,6 +123,7 @@ export const getDirById = async (req: Request, res: Response) => {
     }
     const items = await Directory.find({
       parent: id,
+      userId,
     });
 
     res.status(200).json({
@@ -144,13 +154,16 @@ export const deleteDir = async (req: Request, res: Response) => {
     // recursively delete all the  sub folders
 
     async function deleteAll(id: ObjectId) {
+      const userId = req.headers["userId"];
       const subDirs = await Directory.find({
         parent: id,
+        userId,
       });
       for (const dirs of subDirs) {
         deleteAll(dirs._id);
         await Directory.deleteOne({
           _id: dirs._id,
+          userId,
         });
       }
     }
@@ -180,6 +193,7 @@ export const updateDir = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { name, parent } = req.body;
+    const userId = req.headers["userId"];
 
     if (!id || !parent || typeof id != "string") {
       return res.status(404).json({
@@ -191,6 +205,7 @@ export const updateDir = async (req: Request, res: Response) => {
     const alreadyExist = await Directory.find({
       name,
       parent,
+      userId,
     });
 
     if (alreadyExist.length > 0) {
@@ -203,6 +218,7 @@ export const updateDir = async (req: Request, res: Response) => {
     const updatedDir = await Directory.findByIdAndUpdate(
       {
         _id: id,
+        userId,
       },
       {
         name,

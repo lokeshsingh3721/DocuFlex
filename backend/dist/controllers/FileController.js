@@ -23,7 +23,16 @@ const parseFileType = z.object({
 export const createFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // zod validation
-        const { success, data } = parseFileType.safeParse(req.body);
+        const { name, createdAt, lastEdit, size, parent } = req.body;
+        const userId = req.headers["userId"];
+        const { success, data } = parseFileType.safeParse({
+            name,
+            createdAt,
+            lastEdit,
+            size,
+            parent,
+            userId,
+        });
         if (!success) {
             return res.status(404).json({
                 success: false,
