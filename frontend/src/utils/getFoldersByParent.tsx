@@ -4,7 +4,14 @@ export default async function getFoldersByParentId(
   id: string
 ): Promise<FolderType[] | null> {
   try {
-    const res = await fetch(` http://localhost:4000/api/directory/${id}`);
+    const token = localStorage.getItem("token");
+    const res = await fetch(` http://localhost:4000/api/directory/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const items = await res.json();
 
     return items.folders;

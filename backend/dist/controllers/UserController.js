@@ -67,6 +67,7 @@ export const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         // validate input
         const { success, data } = parseLoginUser.safeParse(req.body);
+        console.log(success);
         if (!success) {
             return res.status(404).json({
                 success: false,

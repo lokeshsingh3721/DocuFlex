@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { handleSignUp } from "../../utility/submitHandler";
+import { handleSignUp } from "../utils/authHandler";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -9,18 +9,17 @@ const SignUp = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const setLoadingState = useSetRecoilState(atomLoadingState);
 
-  // const submit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-  //   e.preventDefault();
-  //   const data = await handleSignUp(firstName, lastName, email, password);
-  //   if (data.success) {
-  //     localStorage.setItem("token", data.token);
-  //     navigate("/dashboard");
-  //   } else {
-  //     toast(`${data.error}`);
-  //   }
-  // };
+  const submit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    const data = await handleSignUp({ firstName, lastName, email, password });
+    if (data.success) {
+      localStorage.setItem("token", data.token);
+      navigate("/");
+    } else {
+      navigate("/signup");
+    }
+  };
 
   return (
     <form className="w-[400px] border-[1.5px] border-solid border-gray-200 mx-auto flex flex-col gap-3 p-5 mt-10">
@@ -80,7 +79,7 @@ const SignUp = () => {
         type="submit"
         className="bg-black text-white py-2"
         onClick={(e) => {
-          // submit(e);
+          submit(e);
         }}
       >
         Sign Up
