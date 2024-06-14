@@ -14,6 +14,8 @@ export const WebSocketProvider = ({ children }: React.PropsWithChildren) => {
     ws.current = new WebSocket("ws://localhost:4000");
 
     ws.current.onopen = () => {
+      const token = localStorage.getItem("token");
+      ws.current?.send(JSON.stringify({ type: "initial", token }));
       console.log("Connected to WebSocket");
     };
 
@@ -27,6 +29,10 @@ export const WebSocketProvider = ({ children }: React.PropsWithChildren) => {
       if (message.type === "newFile") {
         setRecentFiles(message.files);
       }
+      if (message.type === "initial") {
+        console.log(message.files);
+        setRecentFiles(message.files);
+      }
     };
 
     if (ws.current) {
@@ -36,6 +42,8 @@ export const WebSocketProvider = ({ children }: React.PropsWithChildren) => {
 
   const sendFile = (fileData: FolderType) => {
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      const token = localStorage.getItem("token");
+      fileData.token = token as string;
       ws.current.send(JSON.stringify(fileData));
     }
   };

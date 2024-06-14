@@ -1,8 +1,9 @@
 import express from "express";
 import cors from "cors";
-import morgan from "morgan";
+import morgan, { token } from "morgan";
 import dbConnect from "./db.js";
 import router from "./routes/index.js";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import WebSocket, { WebSocketServer } from "ws";
 import {
   checkHasFiles,
@@ -45,21 +46,31 @@ const PORT = process.env.SERVER_PORT || 4000;
     ws.on("message", async (message: any) => {
       const data = JSON.parse(message);
       // user validation check
-      if (!data.userId) {
+      if (!data.token) {
         return ws.send(
           JSON.stringify({ type: "error", message: "invalid user " })
         );
       }
-      const userExist = await checkUserExist(data.userId);
+
+      const payload = jwt.verify(data.token, "SECRET") as JwtPayload;
+      const userId = payload.userId;
+      if (!userId) {
+        return ws.send(
+          JSON.stringify({ type: "error", message: "invalid user" })
+        );
+      }
+      const userExist = await checkUserExist(userId);
       if (!userExist) {
         return ws.send(
           JSON.stringify({ type: "error", message: "user doesnot exist " })
         );
       }
+
       // send the initial data
       if (data.type === "initial") {
-        const files = await getFilesByUserId(data.userId);
-        ws.send(JSON.stringify({ type: "initial", files: files }));
+        const files = await getFilesByUserId(userId);
+        console.log("coming here ");
+        ws.send(JSON.stringify({ type: "initial", files }));
         return;
       }
       if (data.type === "addFile") {
