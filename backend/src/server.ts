@@ -69,7 +69,6 @@ const PORT = process.env.SERVER_PORT || 4000;
       // send the initial data
       if (data.type === "initial") {
         const files = await getFilesByUserId(userId);
-        console.log("coming here ");
         ws.send(JSON.stringify({ type: "initial", files }));
         return;
       }
@@ -81,7 +80,7 @@ const PORT = process.env.SERVER_PORT || 4000;
           parent: data.parent,
           lastEdit: data.last_edit,
           size: data.size,
-          userId: data.userId,
+          userId,
         };
 
         // if already exist file no need to add in recent

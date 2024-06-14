@@ -113,6 +113,7 @@ export const getFilesByParent = (req, res) => __awaiter(void 0, void 0, void 0, 
 export const getFilesByType = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { filetype } = req.params;
+        const userId = req.headers["userId"];
         if (typeof filetype != "string") {
             return res.status(404).json({
                 success: false,
@@ -121,6 +122,7 @@ export const getFilesByType = (req, res) => __awaiter(void 0, void 0, void 0, fu
         }
         const files = yield File.find({
             fileType: filetype,
+            userId,
         });
         return res.status(200).json({
             success: true,

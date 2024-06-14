@@ -14,7 +14,7 @@ export default async function getFolders(): Promise<FolderType[] | null> {
       }
     );
     const folders = await res.json();
-    return folders.data.length > 0 ? folders.data : null;
+    return folders.data;
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);

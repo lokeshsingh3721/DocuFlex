@@ -1,7 +1,7 @@
 import User from "../models/userModel.js";
 import { Request, Response } from "express";
 import { z } from "zod";
-import bcrypt from "bcrypt";
+import bcrypt, { hash } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { token } from "morgan";
 
@@ -78,6 +78,17 @@ export const loginUser = async (req: Request, res: Response) => {
       return res.status(404).json({
         success: false,
         message: "user doesnt exist ",
+      });
+    }
+    const originalPassword = bcrypt.compareSync(
+      data.password,
+      userExist.password
+    );
+
+    if (!originalPassword) {
+      return res.status(404).json({
+        success: false,
+        message: "invalid details",
       });
     }
     // generate the token

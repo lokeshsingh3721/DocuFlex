@@ -112,6 +112,7 @@ export const getFilesByParent = async (req: Request, res: Response) => {
 export const getFilesByType = async (req: Request, res: Response) => {
   try {
     const { filetype } = req.params;
+    const userId = req.headers["userId"];
     if (typeof filetype != "string") {
       return res.status(404).json({
         success: false,
@@ -120,6 +121,7 @@ export const getFilesByType = async (req: Request, res: Response) => {
     }
     const files = await File.find({
       fileType: filetype,
+      userId,
     });
     return res.status(200).json({
       success: true,

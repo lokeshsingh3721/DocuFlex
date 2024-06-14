@@ -84,6 +84,13 @@ export const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 message: "user doesnt exist ",
             });
         }
+        const originalPassword = bcrypt.compareSync(data.password, userExist.password);
+        if (!originalPassword) {
+            return res.status(404).json({
+                success: false,
+                message: "invalid details",
+            });
+        }
         // generate the token
         const token = jwt.sign({ userId: userExist._id }, "SECRET");
         return res.status(200).json({
