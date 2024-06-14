@@ -1,17 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import getFolders from "../utils/getFolder";
 import { Link } from "react-router-dom";
 
-const Protected = (children: React.PropsWithChildren) => {
-  // check token is present or not
+interface ProtectedProps {
+  children: ReactNode;
+}
+
+const Protected = ({ children }: ProtectedProps) => {
   const [isValid, setIsValid] = useState<boolean>(true);
 
   useEffect(() => {
     const init = async () => {
       const token = localStorage.getItem("token");
-      if (!token) setIsValid(false);
+      if (!token) {
+        setIsValid(false);
+        return;
+      }
       const allDir = await getFolders();
-      if (allDir) setIsValid(false);
+      if (!allDir) setIsValid(false);
     };
     init();
   }, []);
@@ -24,6 +30,8 @@ const Protected = (children: React.PropsWithChildren) => {
       </center>
     );
   }
+
   return <>{children}</>;
 };
+
 export default Protected;
