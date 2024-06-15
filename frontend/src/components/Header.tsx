@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 const Header = () => {
-  const [newFolder, setNewFolder] = useState<any>(null);
+  const [newFolder, setNewFolder] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
   const [open, setIsOpen] = useState<boolean>(false);
   return (
     <>
@@ -11,7 +12,10 @@ const Header = () => {
             className="border-2 w-full border-gray-400  pl-8 py-2 outline-none"
             type="search"
             placeholder="Search files"
-            value={" "}
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
           />
           <svg
             className="absolute w-5 h-auto top-3 left-2 fill-gray-400"
@@ -28,31 +32,6 @@ const Header = () => {
           className="bg-blue-500 rounded   p-1 text-white px-8 hover:cursor-pointer"
         >
           Create New
-        </button>
-      </div>
-      <div
-        className={`${
-          open
-            ? " w-36  mb-5 mx-auto flex ml-[82%] flex-col  border-2 border-blue-500 p-2 gap-2 rounded"
-            : "hidden"
-        } `}
-      >
-        <input
-          type="text"
-          placeholder="folder name..."
-          value={newFolder}
-          onChange={(e) => {
-            setNewFolder(e.target.value);
-          }}
-          className="border-[1px] border-gray-400 p-1"
-        />
-        <button
-          onClick={() => {
-            setIsOpen(false);
-          }}
-          className="border-[1px] border-gray-400 py-1"
-        >
-          Create
         </button>
       </div>
     </>

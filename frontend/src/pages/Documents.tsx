@@ -41,7 +41,7 @@ const Documents = () => {
           <p>Sort:A-Z</p>
         </div>
       </div>
-      {documents ? (
+      {documents && documents.length > 0 ? (
         <Table files={documents} />
       ) : (
         <h1 className="text-center font-bold text-xl">No files</h1>

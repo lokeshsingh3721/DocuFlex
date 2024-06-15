@@ -42,7 +42,7 @@ const Images = () => {
           <p>Sort:A-Z</p>
         </div>
       </div>
-      {videos ? (
+      {videos && videos.length > 0 ? (
         <Table files={videos} />
       ) : (
         <h1 className="text-center font-bold text-xl">No Videos </h1>

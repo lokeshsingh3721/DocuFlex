@@ -10,34 +10,42 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    // get the token
-    const token = req.headers["authorization"];
-    if (!token) {
-        return res.status(404).json({
-            success: false,
-            message: "invalid access",
+    var _a;
+    try {
+        // get the token
+        const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
+        if (!token) {
+            return res.status(404).json({
+                success: false,
+                message: "invalid access",
+            });
+        }
+        // verify the token
+        const payload = jwt.verify(token, "SECRET");
+        if (!payload) {
+            return res.status(404).json({
+                success: false,
+                message: "invalid token",
+            });
+        }
+        // check user exist or not
+        const user = yield User.findById({
+            _id: payload.userId,
         });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "user doesnt exist ",
+            });
+        }
+        // appending userId to the request
+        req.headers["userId"] = payload.userId;
+        next();
     }
-    // verify the token
-    const payload = jwt.verify(token.split(" ")[1], "SECRET");
-    if (!payload) {
-        return res.status(404).json({
-            success: false,
-            message: "invalid token",
-        });
+    catch (error) {
+        if (error instanceof Error) {
+            console.log(error.message);
+        }
     }
-    // check user exist or not
-    const user = yield User.findById({
-        _id: payload.userId,
-    });
-    if (!user) {
-        return res.status(404).json({
-            success: false,
-            message: "user doesnt exist ",
-        });
-    }
-    // appending userId to the request
-    req.headers["userId"] = payload.userId;
-    next();
 });
 export default authMiddleware;

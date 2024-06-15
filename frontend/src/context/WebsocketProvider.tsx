@@ -14,9 +14,13 @@ export const WebSocketProvider = ({ children }: React.PropsWithChildren) => {
     ws.current = new WebSocket("ws://localhost:4000");
 
     ws.current.onopen = () => {
-      const token = localStorage.getItem("token");
-      ws.current?.send(JSON.stringify({ type: "initial", token }));
-      console.log("Connected to WebSocket");
+      if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+        const token = localStorage.getItem("token");
+        if (token) {
+          ws.current.send(JSON.stringify({ type: "initial", token }));
+        }
+      }
+      console.log("connected");
     };
 
     ws.current.onclose = () => {

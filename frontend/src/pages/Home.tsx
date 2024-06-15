@@ -52,7 +52,7 @@ const Home = () => {
       </div>
 
       <div className="flex gap-2 flex-wrap  items-center">
-        {folders ? (
+        {folders && folders.length > 0 ? (
           folders.map((folder) => {
             return <Folder key={folder._id} folder={folder} />;
           })
@@ -85,7 +85,7 @@ const Home = () => {
           <p>Sort:A-Z</p>
         </div>
       </div>
-      {recentFiles ? (
+      {recentFiles && recentFiles.length > 0 ? (
         <Table files={recentFiles} />
       ) : (
         <p className="text-center font-bold text-xl">No recent files </p>

@@ -11,6 +11,7 @@ import {
   createFile,
   getFilesByUserId,
 } from "./utils/RecentFunctions.js";
+import ws from "ws";
 
 type RecentFiles = {
   _id: string;

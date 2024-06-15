@@ -1,5 +1,4 @@
 import { useEffect, useState, ReactNode } from "react";
-import getFolders from "../utils/getFolder";
 import { Link } from "react-router-dom";
 
 interface ProtectedProps {
@@ -7,7 +6,7 @@ interface ProtectedProps {
 }
 
 const Protected = ({ children }: ProtectedProps) => {
-  const [isValid, setIsValid] = useState<boolean>(true);
+  const [isValid, setIsValid] = useState<boolean>(false);
 
   useEffect(() => {
     const init = async () => {
@@ -16,8 +15,7 @@ const Protected = ({ children }: ProtectedProps) => {
         setIsValid(false);
         return;
       }
-      const allDir = await getFolders();
-      if (!allDir) setIsValid(false);
+      setIsValid(true);
     };
     init();
   }, []);

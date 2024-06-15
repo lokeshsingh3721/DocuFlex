@@ -42,7 +42,7 @@ const Images = () => {
           <p>Sort:A-Z</p>
         </div>
       </div>
-      {images ? (
+      {images && images.length > 0 ? (
         <Table files={images} />
       ) : (
         <h1 className="text-center font-bold text-xl">No Images </h1>
