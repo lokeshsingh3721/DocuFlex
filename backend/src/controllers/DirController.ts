@@ -37,7 +37,7 @@ export const createDir = async (req: Request, res: Response) => {
 
     if (data.parent) {
       const parentExist = await Directory.findById({
-        parent: data.parent,
+        _id: data.parent,
       });
       if (!parentExist) {
         return res.status(404).json({
@@ -69,7 +69,6 @@ export const createDir = async (req: Request, res: Response) => {
         message: "Directory already exists",
       });
     }
-
     const directory = await Directory.create(data);
 
     res.status(200).json({

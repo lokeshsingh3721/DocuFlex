@@ -37,7 +37,7 @@ export const createDir = (req, res) => __awaiter(void 0, void 0, void 0, functio
         }
         if (data.parent) {
             const parentExist = yield Directory.findById({
-                parent: data.parent,
+                _id: data.parent,
             });
             if (!parentExist) {
                 return res.status(404).json({

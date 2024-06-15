@@ -3,7 +3,6 @@ import Directory from "../models/dirModel.js";
 import { Request, Response } from "express";
 import File from "../models/fileModel.js";
 import { z } from "zod";
-import { parse } from "dotenv";
 import { getFileType } from "../utils/getFileType.js";
 
 const parseFileType = z.object({

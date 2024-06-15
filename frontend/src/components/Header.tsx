@@ -1,15 +1,36 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import createFolder from "../utils/createFolder";
 
 const Header = () => {
-  const [newFolder, setNewFolder] = useState<string>("");
-  const [search, setSearch] = useState<string>("");
-  const [open, setIsOpen] = useState<boolean>(false);
+  const [search, setSearch] = useState("");
+  const [open, setOpen] = useState(false);
+  const [folderName, setFolderName] = useState("");
+  const { id } = useParams();
+  const handleCreateFolder = async () => {
+    console.log(`Folder Created: ${folderName}`);
+    if (!folderName) {
+      alert("please enter the folder name ");
+      return;
+    }
+    let success;
+    if (!id) {
+      success = await createFolder(folderName, null);
+    } else success = await createFolder(folderName, id as string);
+    if (!success) {
+      alert("server error");
+      return;
+    }
+    setFolderName("");
+    setOpen(false);
+  };
+
   return (
     <>
-      <div className="flex w-full pt-2 top-0 justify-between  bg-white z-10 relative">
-        <div className="w-[80%] flex relative">
+      <div className="flex w-full  top-0 justify-between bg-white z-10 relative">
+        <div className={`w-[80%] flex relative ${open ? "hidden" : ""}`}>
           <input
-            className="border-2 w-full border-gray-400  pl-8 py-2 outline-none"
+            className="border-2 w-full border-gray-400 pl-8 py-2 outline-none"
             type="search"
             placeholder="Search files"
             value={search}
@@ -27,13 +48,44 @@ const Header = () => {
         </div>
         <button
           onClick={() => {
-            setIsOpen(!open);
+            setOpen(true);
           }}
-          className="bg-blue-500 rounded   p-1 text-white px-8 hover:cursor-pointer"
+          className={`bg-blue-500 rounded p-1 text-white px-8 hover:cursor-pointer ${
+            open ? "hidden" : ""
+          }`}
         >
           Create New
         </button>
       </div>
+
+      {open && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 className="text-lg font-semibold mb-4">Create Folder</h2>
+            <input
+              type="text"
+              className="border border-gray-300 p-2 w-full outline-none mb-4"
+              placeholder="Folder Name"
+              value={folderName}
+              onChange={(e) => setFolderName(e.target.value)}
+            />
+            <div className="flex justify-end">
+              <button
+                className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2"
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={handleCreateFolder}
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
