@@ -8,11 +8,11 @@ const getFilesByUserId = async (userId: string) => {
   return files;
 };
 
-const checkHasFiles = async (_id: string) => {
-  const hasFile = await Recent.findById({
-    _id,
+const checkHasFiles = async (fileId: string) => {
+  const hasFile = await Recent.find({
+    fileId,
   });
-  return hasFile ? true : false;
+  return hasFile.length > 0 ? true : false;
 };
 
 const createFile = async (data: any) => {

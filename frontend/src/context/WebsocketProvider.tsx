@@ -1,13 +1,13 @@
 // WebSocketContext.js
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { FolderType, WebSocketContextType } from "../types";
+import { RecentFileType, WebSocketContextType } from "../../types";
 
 const WebSocketContext = createContext<WebSocketContextType | null>(null);
 
 export const useWebSocket = () => useContext(WebSocketContext);
 
 export const WebSocketProvider = ({ children }: React.PropsWithChildren) => {
-  const [recentFiles, setRecentFiles] = useState<FolderType[] | null>(null);
+  const [recentFiles, setRecentFiles] = useState<RecentFileType[] | null>(null);
   const ws = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -44,11 +44,11 @@ export const WebSocketProvider = ({ children }: React.PropsWithChildren) => {
     }
   }, []);
 
-  const sendFile = (fileData: FolderType) => {
+  const sendFile = (fileId: string, name: string) => {
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       const token = localStorage.getItem("token");
-      fileData.token = token as string;
-      ws.current.send(JSON.stringify(fileData));
+      const type = "addFile";
+      ws.current.send(JSON.stringify({ type, fileId, name, token }));
     }
   };
 

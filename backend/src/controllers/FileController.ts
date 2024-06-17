@@ -1,7 +1,7 @@
-import express from "express";
 import Directory from "../models/dirModel.js";
 import { Request, Response } from "express";
 import File from "../models/fileModel.js";
+import Recent from "../models/recentModel.js";
 import { z } from "zod";
 import { getFileType } from "../utils/getFileType.js";
 
@@ -133,6 +133,59 @@ export const getFilesByType = async (req: Request, res: Response) => {
         success: false,
         message: error.message,
       });
+    }
+  }
+};
+
+export const deleteFile = async (req: Request, res: Response) => {
+  try {
+    const userId = req.headers["userId"];
+    const { id } = req.params;
+    if (typeof id != "string") {
+      return res.status(404).json({
+        success: false,
+        message: "invalid input",
+      });
+    }
+    // check file exist or not
+    const doesFileExist = await File.find({
+      _id: id,
+      userId,
+    });
+    if (doesFileExist.length <= 0) {
+      return res.status(404).json({
+        success: false,
+        message: "file does not exist ",
+      });
+    }
+    // check if file exist in recent
+    const fileExistInRecent = await Recent.findOne({
+      fileId: id,
+      userId,
+    });
+    if (fileExistInRecent) {
+      await Recent.deleteOne({
+        fileId: id,
+        userId,
+      });
+    }
+    // delete the file
+    await File.deleteOne({
+      _id: id,
+      userId,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "file deleted successfully",
+    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(501).json({
+        success: false,
+        message: error.message,
+      });
+      console.log(error.message);
     }
   }
 };

@@ -1,12 +1,9 @@
-
 import { Link } from "react-router-dom";
 import { useNavigationContext } from "../context/NavigationProvider";
-import { PageNavigation } from "../types";
+import { PageNavigation } from "../../types";
 
 const Breadcrumb = () => {
-
-  const { pageNavigation, setPageNavigation } = useNavigationContext()
-
+  const { pageNavigation, setPageNavigation } = useNavigationContext();
 
   function clearNavigation(path: string, id: string) {
     setPageNavigation((page) => {
@@ -29,9 +26,21 @@ const Breadcrumb = () => {
   return (
     <div className="ml-40 flex gap-1 pt-5">
       {pageNavigation?.map((page) => {
-        return <p> <Link to={`${page.path}/${page.id}`} onClick={() => {
-          clearNavigation(page.path, page.id)
-        }} className='underline' >{page.path}</Link> / </p>
+        return (
+          <p>
+            {" "}
+            <Link
+              to={`${page.path}/${page.id}`}
+              onClick={() => {
+                clearNavigation(page.path, page.id);
+              }}
+              className="underline"
+            >
+              {page.path}
+            </Link>{" "}
+            /{" "}
+          </p>
+        );
       })}
     </div>
   );

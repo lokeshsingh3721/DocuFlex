@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import morgan, { token } from "morgan";
+import morgan from "morgan";
 import dbConnect from "./db.js";
 import router from "./routes/index.js";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -11,17 +11,7 @@ import {
   createFile,
   getFilesByUserId,
 } from "./utils/RecentFunctions.js";
-import ws from "ws";
-
-type RecentFiles = {
-  _id: string;
-  name: string;
-  createdAt: string;
-  parent: string;
-  lastEdit: string;
-  size: string;
-  userId: string;
-};
+import { RecentFileType } from "../types.js";
 
 const PORT = process.env.SERVER_PORT || 4000;
 
@@ -74,19 +64,15 @@ const PORT = process.env.SERVER_PORT || 4000;
         return;
       }
       if (data.type === "addFile") {
-        const newFile: RecentFiles = {
-          _id: data._id,
+        const newFile: RecentFileType = {
           name: data.name,
-          createdAt: data.createdAt,
-          parent: data.parent,
-          lastEdit: data.last_edit,
-          size: data.size,
           userId,
+          fileId: data.fileId,
         };
 
         // if already exist file no need to add in recent
 
-        const hasFile = await checkHasFiles(newFile._id);
+        const hasFile = await checkHasFiles(newFile.fileId);
 
         if (ws.readyState === WebSocket.OPEN && !hasFile) {
           await createFile(newFile);

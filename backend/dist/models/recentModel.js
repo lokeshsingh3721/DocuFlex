@@ -5,27 +5,15 @@ const schema = new Schema({
         type: String,
         required: true,
     },
-    parent: {
-        type: Schema.Types.ObjectId,
-        ref: "Directory",
-        default: null,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now(),
-    },
-    lastEdit: {
-        type: Date,
-        default: Date.now(),
-    },
-    size: {
-        type: Number,
-        required: true,
-    },
     userId: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
+    },
+    fileId: {
+        type: Schema.Types.ObjectId,
+        ref: "File",
+        require: true,
     },
 });
 export default mongoose.model("Recent", schema);

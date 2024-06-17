@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import Directory from "../models/dirModel.js";
 import File from "../models/fileModel.js";
+import Recent from "../models/recentModel.js";
 import { z } from "zod";
 import { getFileType } from "../utils/getFileType.js";
 const parseFileType = z.object({
@@ -136,6 +137,58 @@ export const getFilesByType = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 success: false,
                 message: error.message,
             });
+        }
+    }
+});
+export const deleteFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.headers["userId"];
+        const { id } = req.params;
+        if (typeof id != "string") {
+            return res.status(404).json({
+                success: false,
+                message: "invalid input",
+            });
+        }
+        // check file exist or not
+        const doesFileExist = yield File.find({
+            _id: id,
+            userId,
+        });
+        if (doesFileExist.length <= 0) {
+            return res.status(404).json({
+                success: false,
+                message: "file does not exist ",
+            });
+        }
+        // check if file exist in recent
+        const fileExistInRecent = yield Recent.findOne({
+            fileId: id,
+            userId,
+        });
+        if (fileExistInRecent) {
+            yield Recent.deleteOne({
+                fileId: id,
+                userId,
+            });
+        }
+        // delete the file
+        yield File.deleteOne({
+            _id: id,
+            userId,
+        });
+        res.status(200).json({
+            success: true,
+            message: "file deleted successfully",
+        });
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            res.status(501).json({
+                success: false,
+                message: error.message,
+            });
+            console.log(error.message);
         }
     }
 });

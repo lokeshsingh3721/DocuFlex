@@ -1,21 +1,28 @@
 import Folder from "../components/Folder";
 import { useEffect, useState } from "react";
 import getFolders from "../utils/getFolder";
-import { FolderType } from "../types";
-import Table from "../components/Table";
-import { useWebSocket } from "../context/WebsocketProvider";
+import { FolderType } from "../../types";
+
 import { useParams } from "react-router-dom";
 import createFolder from "../utils/createFolder";
+import RecentTable from "../components/RecentTablt";
 
 const Home = () => {
   const [folders, setFolders] = useState<FolderType[] | null | undefined>(
     undefined
   );
-  const recentFiles = useWebSocket()?.recentFiles;
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
   const { id } = useParams();
+
+  useEffect(() => {
+    async function init(): Promise<void> {
+      setFolders(await getFolders());
+    }
+    init();
+  }, [open]);
+
   const handleCreateFolder = async () => {
     console.log(`Folder Created: ${folderName}`);
     if (!folderName) {
@@ -33,12 +40,6 @@ const Home = () => {
     setFolderName("");
     setOpen(false);
   };
-  useEffect(() => {
-    async function init(): Promise<void> {
-      setFolders(await getFolders());
-    }
-    init();
-  }, [open]);
 
   if (folders === undefined)
     return <h1 className="text-center  text-3xl "> Loading... </h1>;
@@ -163,11 +164,7 @@ const Home = () => {
           <p>Sort:A-Z</p>
         </div>
       </div>
-      {recentFiles && recentFiles.length > 0 ? (
-        <Table files={recentFiles} />
-      ) : (
-        <p className="text-center font-bold text-xl">No recent files </p>
-      )}
+      <RecentTable />
     </>
   );
 };

@@ -1,8 +1,8 @@
 import { useWebSocket } from "../context/WebsocketProvider";
-import { FolderType, WebSocketContextType } from "../types";
+import { FileType, WebSocketContextType } from "../../types";
 
-const Table = ({ files }: { files: FolderType[] }) => {
-  const { sendFile, recentFiles } = useWebSocket() as WebSocketContextType;
+const Table = ({ files }: { files: FileType[] }) => {
+  const { sendFile } = useWebSocket() as WebSocketContextType;
 
   return (
     <table className="w-full bg-white border border-gray-200">
@@ -19,15 +19,10 @@ const Table = ({ files }: { files: FolderType[] }) => {
         </tr>
       </thead>
       <tbody>
-        {files.map((file: FolderType) => (
+        {files.map((file: FileType) => (
           <tr
             onClick={() => {
-              const hasFile = recentFiles?.some((el) => el._id === file._id);
-
-              if (hasFile) return;
-
-              file.type = "addFile";
-              sendFile(file);
+              sendFile(file._id, file.name);
             }}
             key={file._id}
             className="hover:bg-gray-50 hover:cursor-pointer"

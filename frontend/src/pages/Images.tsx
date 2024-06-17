@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Table from "../components/Table";
-import { FolderType } from "../types";
+import { FileType } from "../../types";
 import getFilesByType from "../utils/getFilesByType";
 
 const Images = () => {
-  const [images, setImages] = useState<FolderType[] | null | undefined>(
+  const [images, setImages] = useState<FileType[] | null | undefined>(
     undefined
   );
 

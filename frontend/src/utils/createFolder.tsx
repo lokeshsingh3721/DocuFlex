@@ -3,7 +3,6 @@ const createFolder = async (name: string, parent: string | null) => {
     const token = localStorage.getItem("token");
     let res;
     if (parent) {
-      console.log("spiddermen");
       res = await fetch("http://localhost:4000/api/directory/create", {
         method: "POST",
         headers: {

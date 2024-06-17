@@ -8,5 +8,5 @@
     "esModuleInterop": true,
     "moduleResolution": "NodeNext"
   },
-  "include": ["src"]
+  "include": ["src", "types.d.ts"]
 }

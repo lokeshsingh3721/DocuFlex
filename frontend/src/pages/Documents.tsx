@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import Table from "../components/Table";
-import { FolderType } from "../types";
+import { FileType } from "../../types";
 import getFilesByType from "../utils/getFilesByType";
 
 const Documents = () => {
-  const [documents, setDocuments] = useState<FolderType[] | null | undefined>(
+  const [documents, setDocuments] = useState<FileType[] | null | undefined>(
     undefined
   );
 

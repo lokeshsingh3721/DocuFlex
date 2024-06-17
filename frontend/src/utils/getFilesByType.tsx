@@ -1,8 +1,8 @@
-import { FolderType } from "../types";
+import { FileType } from "../../types";
 
 export default async function getFilesByType(
   type: string
-): Promise<FolderType[] | null> {
+): Promise<FileType[] | null> {
   try {
     const token = localStorage.getItem("token");
     const res = await fetch(

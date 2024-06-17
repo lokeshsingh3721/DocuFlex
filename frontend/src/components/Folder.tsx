@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useNavigationContext } from "../context/NavigationProvider";
-import { FolderType } from "../types";
+import { FolderType } from "../../types";
 
 const Folder = ({ folder }: { folder: FolderType }) => {
   const navigate = useNavigate();

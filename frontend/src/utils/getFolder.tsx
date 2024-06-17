@@ -1,4 +1,4 @@
-import { FolderType } from "../types";
+import { FolderType } from "../../types";
 
 export default async function getFolders(): Promise<FolderType[] | null> {
   try {

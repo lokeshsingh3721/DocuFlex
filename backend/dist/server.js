@@ -52,16 +52,12 @@ const PORT = process.env.SERVER_PORT || 4000;
             }
             if (data.type === "addFile") {
                 const newFile = {
-                    _id: data._id,
                     name: data.name,
-                    createdAt: data.createdAt,
-                    parent: data.parent,
-                    lastEdit: data.last_edit,
-                    size: data.size,
                     userId,
+                    fileId: data.fileId,
                 };
                 // if already exist file no need to add in recent
-                const hasFile = yield checkHasFiles(newFile._id);
+                const hasFile = yield checkHasFiles(newFile.fileId);
                 if (ws.readyState === WebSocket.OPEN && !hasFile) {
                     yield createFile(newFile);
                     const files = yield getFilesByUserId(newFile.userId);

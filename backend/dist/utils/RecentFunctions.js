@@ -15,11 +15,11 @@ const getFilesByUserId = (userId) => __awaiter(void 0, void 0, void 0, function*
     });
     return files;
 });
-const checkHasFiles = (_id) => __awaiter(void 0, void 0, void 0, function* () {
-    const hasFile = yield Recent.findById({
-        _id,
+const checkHasFiles = (fileId) => __awaiter(void 0, void 0, void 0, function* () {
+    const hasFile = yield Recent.find({
+        fileId,
     });
-    return hasFile ? true : false;
+    return hasFile.length > 0 ? true : false;
 });
 const createFile = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const files = yield Recent.create(data);

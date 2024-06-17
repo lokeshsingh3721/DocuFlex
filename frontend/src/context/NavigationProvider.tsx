@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-import { PageNavigation, NavigationContextType } from "../types";
+import { PageNavigation, NavigationContextType } from "../../types";
 
 // Create the context with the correct type
 const NavigationContext = createContext<NavigationContextType | null>(null);

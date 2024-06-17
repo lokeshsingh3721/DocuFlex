@@ -1,6 +1,6 @@
 import Folder from "../components/Folder";
 import { useEffect, useState } from "react";
-import { FolderType } from "../types";
+import { FileType, FolderType } from "../../types";
 import Table from "../components/Table";
 import { useParams } from "react-router-dom";
 import getFilesByParentId from "../utils/getFilesByParentId";
@@ -15,7 +15,7 @@ type params = {
 const FolderById = () => {
   const { id } = useParams() as params;
   const [folders, setFolders] = useState<FolderType[] | undefined>(undefined);
-  const [files, setFiles] = useState<FolderType[] | undefined>(undefined);
+  const [files, setFiles] = useState<FileType[] | undefined>(undefined);
 
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
