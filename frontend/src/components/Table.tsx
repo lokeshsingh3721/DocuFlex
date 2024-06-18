@@ -1,8 +1,36 @@
 import { useWebSocket } from "../context/WebsocketProvider";
 import { FileType, WebSocketContextType } from "../../types";
+import deleteFile from "../utils/deleteFile";
+import { useState, useEffect } from "react";
+import getFilesByParentId from "../utils/getFilesByParentId";
 
-const Table = ({ files }: { files: FileType[] }) => {
-  const { sendFile } = useWebSocket() as WebSocketContextType;
+const Table = ({ id }: { id: string }) => {
+  const { sendFile, deleteFile: deleteRecentFile } =
+    useWebSocket() as WebSocketContextType;
+  const [files, setFiles] = useState<FileType[] | null>(null);
+  useEffect(() => {
+    async function init(): Promise<void> {
+      setFiles(await getFilesByParentId(id));
+    }
+    init();
+  }, [id]);
+
+  async function deleteHandler(id: string, parent: string) {
+    try {
+      const res = await deleteFile(id, parent);
+      if (!res.success) {
+        alert("unable to delete file right now ");
+        return;
+      }
+      alert("file deleted successfully");
+      setFiles(res.files);
+      deleteRecentFile(id);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
+    }
+  }
 
   return (
     <table className="w-full bg-white border border-gray-200">
@@ -19,7 +47,7 @@ const Table = ({ files }: { files: FileType[] }) => {
         </tr>
       </thead>
       <tbody>
-        {files.map((file: FileType) => (
+        {files?.map((file: FileType) => (
           <tr
             onClick={() => {
               sendFile(file._id, file.name);
@@ -38,7 +66,14 @@ const Table = ({ files }: { files: FileType[] }) => {
               <button className="text-blue-500 hover:underline mr-2">
                 Edit
               </button>
-              <button className="text-red-500 hover:underline">Delete</button>
+              <button
+                onClick={() => {
+                  deleteHandler(file._id, file.parent);
+                }}
+                className="text-red-500 hover:underline"
+              >
+                Delete
+              </button>
             </td>
           </tr>
         ))}

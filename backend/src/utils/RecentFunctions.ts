@@ -12,7 +12,8 @@ const checkHasFiles = async (fileId: string) => {
   const hasFile = await Recent.find({
     fileId,
   });
-  return hasFile.length > 0 ? true : false;
+  console.log(hasFile.length);
+  return hasFile.length < 0 || hasFile.length == 0 ? false : true;
 };
 
 const createFile = async (data: any) => {
@@ -27,4 +28,24 @@ const checkUserExist = async (_id: string) => {
   return user;
 };
 
-export { checkUserExist, getFilesByUserId, checkHasFiles, createFile };
+const deleteFileFromRecent = async (_id: string) => {
+  await Recent.deleteOne({
+    fileId: _id,
+  });
+};
+
+const checkhasFile = async (_id: string) => {
+  const file = await Recent.findOne({
+    fileId: _id,
+  });
+  return file ? true : false;
+};
+
+export {
+  checkUserExist,
+  getFilesByUserId,
+  checkHasFiles,
+  createFile,
+  deleteFileFromRecent,
+  checkhasFile,
+};

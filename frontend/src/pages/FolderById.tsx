@@ -1,9 +1,8 @@
 import Folder from "../components/Folder";
 import { useEffect, useState } from "react";
-import { FileType, FolderType } from "../../types";
+import { FolderType } from "../../types";
 import Table from "../components/Table";
 import { useParams } from "react-router-dom";
-import getFilesByParentId from "../utils/getFilesByParentId";
 import getFoldersByParentId from "../utils/getFoldersByParent";
 import createFolder from "../utils/createFolder";
 
@@ -14,8 +13,7 @@ type params = {
 
 const FolderById = () => {
   const { id } = useParams() as params;
-  const [folders, setFolders] = useState<FolderType[] | undefined>(undefined);
-  const [files, setFiles] = useState<FileType[] | undefined>(undefined);
+  const [folders, setFolders] = useState<FolderType[] | null>(null);
 
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
@@ -43,14 +41,7 @@ const FolderById = () => {
 
   useEffect(() => {
     async function init(): Promise<void> {
-      const [files, folders] = await Promise.all([
-        getFilesByParentId(id),
-        getFoldersByParentId(id),
-      ]);
-      if (folders && files) {
-        setFolders(folders);
-        setFiles(files);
-      }
+      setFolders(await getFoldersByParentId(id));
     }
     init();
   }, [id, open]);
@@ -145,7 +136,7 @@ const FolderById = () => {
       </div>
 
       <div className="flex gap-2 flex-wrap  items-center">
-        {folders != undefined && folders?.length > 0 ? (
+        {folders && folders?.length > 0 ? (
           folders?.map((folder) => {
             return <Folder key={folder._id} folder={folder} />;
           })
@@ -179,11 +170,7 @@ const FolderById = () => {
         </div>
       </div>
 
-      {files != undefined && files?.length > 0 ? (
-        <Table files={files} />
-      ) : (
-        <h1 className="font-bold text-center text-lg">No Files are there </h1>
-      )}
+      <Table id={id} />
     </>
   );
 };

@@ -19,7 +19,8 @@ const checkHasFiles = (fileId) => __awaiter(void 0, void 0, void 0, function* ()
     const hasFile = yield Recent.find({
         fileId,
     });
-    return hasFile.length > 0 ? true : false;
+    console.log(hasFile.length);
+    return hasFile.length < 0 || hasFile.length == 0 ? false : true;
 });
 const createFile = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const files = yield Recent.create(data);
@@ -31,4 +32,15 @@ const checkUserExist = (_id) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return user;
 });
-export { checkUserExist, getFilesByUserId, checkHasFiles, createFile };
+const deleteFileFromRecent = (_id) => __awaiter(void 0, void 0, void 0, function* () {
+    yield Recent.deleteOne({
+        fileId: _id,
+    });
+});
+const checkhasFile = (_id) => __awaiter(void 0, void 0, void 0, function* () {
+    const file = yield Recent.findOne({
+        fileId: _id,
+    });
+    return file ? true : false;
+});
+export { checkUserExist, getFilesByUserId, checkHasFiles, createFile, deleteFileFromRecent, checkhasFile, };

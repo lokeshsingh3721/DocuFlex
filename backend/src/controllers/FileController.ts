@@ -140,7 +140,7 @@ export const getFilesByType = async (req: Request, res: Response) => {
 export const deleteFile = async (req: Request, res: Response) => {
   try {
     const userId = req.headers["userId"];
-    const { id } = req.params;
+    const { parent, id } = req.query;
     if (typeof id != "string") {
       return res.status(404).json({
         success: false,
@@ -175,9 +175,16 @@ export const deleteFile = async (req: Request, res: Response) => {
       userId,
     });
 
+    // get all the files
+    const files = await File.find({
+      parent,
+      userId,
+    });
+
     res.status(200).json({
       success: true,
       message: "file deleted successfully",
+      files,
     });
   } catch (error: unknown) {
     if (error instanceof Error) {

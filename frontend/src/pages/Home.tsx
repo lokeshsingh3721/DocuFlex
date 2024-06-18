@@ -20,7 +20,9 @@ const Home = () => {
     async function init(): Promise<void> {
       setFolders(await getFolders());
     }
-    init();
+    if (!open) {
+      init();
+    }
   }, [open]);
 
   const handleCreateFolder = async () => {

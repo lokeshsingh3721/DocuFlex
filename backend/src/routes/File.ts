@@ -12,6 +12,6 @@ const fileRouter = express.Router();
 fileRouter.post("/create", authMiddleware, createFile);
 fileRouter.get("/fileByParentId/:id", authMiddleware, getFilesByParent);
 fileRouter.get("/fileByType/:filetype", authMiddleware, getFilesByType);
-fileRouter.delete("/delete/:id", authMiddleware, deleteFile);
+fileRouter.delete("/delete", authMiddleware, deleteFile);
 
 export { fileRouter };
