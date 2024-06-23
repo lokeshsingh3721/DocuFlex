@@ -1,11 +1,11 @@
 import Logo from "../icons/Logo";
-import Home from "../icons/Home";
-import Files from "../icons/Files";
-import Video from "../icons/Video";
-import Photos from "../icons/Photos";
-import Setting from "../icons/Setting";
-import Logout from "../icons/Logout";
-import Trash from "../icons/Trash";
+import Home from "../icons/HomeIcon";
+import Files from "../icons/FilesIcon";
+import Video from "../icons/VideoIcon";
+import Photos from "../icons/PhotosIcon";
+import Setting from "../icons/SettingIcon";
+import Logout from "../icons/LogoutIcon";
+import Trash from "../icons/TrashIcon";
 
 const LeftSidebar = () => {
   return (

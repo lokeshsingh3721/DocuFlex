@@ -15,6 +15,12 @@ const parseFileType = z.object({
   fileType: z.string().optional(),
 });
 
+const parseFileUpdate = z.object({
+  name: z.string(),
+  fileId: z.string(),
+  userId: z.string(),
+});
+
 export const createFile = async (req: Request, res: Response) => {
   try {
     // zod validation
@@ -194,5 +200,48 @@ export const deleteFile = async (req: Request, res: Response) => {
       });
       console.log(error.message);
     }
+  }
+};
+
+export const updateFile = async (req: Request, res: Response) => {
+  try {
+    const { fileId, name } = req.query;
+    const userId = req.headers["userId"];
+    console.log(fileId, name);
+    // zod validation
+    const { success, data } = parseFileUpdate.safeParse({
+      fileId,
+      name,
+      userId,
+    });
+    if (!success) {
+      return res.status(404).json({
+        success: false,
+        message: "invalid input",
+      });
+    }
+    // check file exist or not
+    const fileExist = await File.findById({
+      _id: data.fileId,
+    });
+    if (!fileExist) {
+      return res.status(404).json({
+        success: false,
+        message: "file doesnot exist",
+      });
+    }
+    // update file
+    await File.findOneAndUpdate({ _id: data.fileId, name: data.name });
+
+    return res.status(200).json({
+      success: true,
+      message: "update successfully",
+    });
+  } catch (error: unknown) {
+    if (error instanceof Error)
+      res.status(501).json({
+        success: false,
+        message: error.message,
+      });
   }
 };

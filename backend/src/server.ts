@@ -8,13 +8,13 @@ import WebSocket, { WebSocketServer } from "ws";
 import {
   checkHasFiles,
   checkUserExist,
-  checkhasFile,
   createFile,
   deleteFileFromRecent,
+  getFileById,
   getFilesByUserId,
+  updateFile,
 } from "./utils/RecentFunctions.js";
 import { RecentFileType } from "../types.js";
-import { deleteFile } from "./controllers/FileController.js";
 
 const PORT = process.env.SERVER_PORT || 4000;
 
@@ -92,6 +92,18 @@ const PORT = process.env.SERVER_PORT || 4000;
           const files = await getFilesByUserId(userId);
           ws.send(JSON.stringify({ type: "delete", files }));
         }
+      }
+      if (data.type === "update") {
+        const id = data.fileId;
+        // get from File
+        const file = await getFileById(id);
+        // get all recent
+        if (!file) {
+          console.log("file doesnt exist");
+          return;
+        }
+        const files = await updateFile(id, file.name);
+        ws.send(JSON.stringify({ type: "update", files }));
       }
     });
 

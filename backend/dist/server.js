@@ -14,7 +14,7 @@ import dbConnect from "./db.js";
 import router from "./routes/index.js";
 import jwt from "jsonwebtoken";
 import WebSocket, { WebSocketServer } from "ws";
-import { checkHasFiles, checkUserExist, createFile, deleteFileFromRecent, getFilesByUserId, } from "./utils/RecentFunctions.js";
+import { checkHasFiles, checkUserExist, createFile, deleteFileFromRecent, getFileById, getFilesByUserId, updateFile, } from "./utils/RecentFunctions.js";
 const PORT = process.env.SERVER_PORT || 4000;
 (() => __awaiter(void 0, void 0, void 0, function* () {
     const app = express();
@@ -73,6 +73,18 @@ const PORT = process.env.SERVER_PORT || 4000;
                     const files = yield getFilesByUserId(userId);
                     ws.send(JSON.stringify({ type: "delete", files }));
                 }
+            }
+            if (data.type === "update") {
+                const id = data.fileId;
+                // get from File
+                const file = yield getFileById(id);
+                // get all recent
+                if (!file) {
+                    console.log("file doesnt exist");
+                    return;
+                }
+                const files = yield updateFile(id, file.name);
+                ws.send(JSON.stringify({ type: "update", files }));
             }
         }));
         ws.on("close", () => {

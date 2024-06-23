@@ -1,5 +1,6 @@
 import Recent from "../models/recentModel.js";
 import User from "../models/userModel.js";
+import File from "../models/fileModel.js";
 
 const getFilesByUserId = async (userId: string) => {
   const files = await Recent.find({
@@ -34,11 +35,22 @@ const deleteFileFromRecent = async (_id: string) => {
   });
 };
 
-const checkhasFile = async (_id: string) => {
-  const file = await Recent.findOne({
-    fileId: _id,
+const getFileById = async (_id: string) => {
+  const file = await File.findById({
+    _id,
   });
-  return file ? true : false;
+  return file;
+};
+
+const updateFile = async (_id: string, name: string) => {
+  const file = await Recent.findOneAndUpdate(
+    {
+      fileId: _id,
+    },
+    { name }
+  );
+  const files = await Recent.find();
+  return files;
 };
 
 export {
@@ -47,5 +59,6 @@ export {
   checkHasFiles,
   createFile,
   deleteFileFromRecent,
-  checkhasFile,
+  getFileById,
+  updateFile,
 };

@@ -4,16 +4,17 @@ import { useNavigationContext } from "../context/NavigationProvider";
 const Video = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { setPageNavigation } = useNavigationContext()
+  const { setPageNavigation } = useNavigationContext();
   const currentPath = location.pathname.substring(1);
   return (
     <div
       onClick={() => {
         navigate("/videos");
-        setPageNavigation(null)
+        setPageNavigation(null);
       }}
-      className={`svg-parent ${currentPath === "videos" ? "underline" : "no-underline"
-        }`}
+      className={`svg-parent ${
+        currentPath === "videos" ? "underline" : "no-underline"
+      }`}
     >
       <svg
         className="stroke-white w-5 h-auto stroke-[1.5] "

@@ -1,7 +1,7 @@
 import Folder from "../components/Folder";
 import { useEffect, useState } from "react";
 import { FolderType } from "../../types";
-import Table from "../components/Table";
+import Table from "../components/TableById";
 import { useParams } from "react-router-dom";
 import getFoldersByParentId from "../utils/getFoldersByParent";
 import createFolder from "../utils/createFolder";
@@ -18,6 +18,14 @@ const FolderById = () => {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [folderName, setFolderName] = useState("");
+
+  useEffect(() => {
+    async function init(): Promise<void> {
+      setFolders(await getFoldersByParentId(id));
+    }
+    init();
+  }, [id, open]);
+
   const handleCreateFolder = async () => {
     console.log(`Folder Created: ${folderName}`);
     if (!folderName) {
@@ -38,13 +46,6 @@ const FolderById = () => {
     setFolderName("");
     setOpen(false);
   };
-
-  useEffect(() => {
-    async function init(): Promise<void> {
-      setFolders(await getFoldersByParentId(id));
-    }
-    init();
-  }, [id, open]);
 
   // if (items === undefined)
   //   return <h1 className="text-center  text-3xl "> Loading... </h1>;
@@ -83,7 +84,7 @@ const FolderById = () => {
       </div>
 
       {open && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
             <h2 className="text-lg font-semibold mb-4">Create Folder</h2>
             <input
@@ -110,6 +111,7 @@ const FolderById = () => {
           </div>
         </div>
       )}
+
       <div className="mt-8 mb-4 flex justify-between items-center pr-6">
         <div className="flex justify-center items-center gap-2">
           <div className="flex justify-center items-center gap-2">

@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import Recent from "../models/recentModel.js";
 import User from "../models/userModel.js";
+import File from "../models/fileModel.js";
 const getFilesByUserId = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     const files = yield Recent.find({
         userId,
@@ -37,10 +38,17 @@ const deleteFileFromRecent = (_id) => __awaiter(void 0, void 0, void 0, function
         fileId: _id,
     });
 });
-const checkhasFile = (_id) => __awaiter(void 0, void 0, void 0, function* () {
-    const file = yield Recent.findOne({
-        fileId: _id,
+const getFileById = (_id) => __awaiter(void 0, void 0, void 0, function* () {
+    const file = yield File.findById({
+        _id,
     });
-    return file ? true : false;
+    return file;
 });
-export { checkUserExist, getFilesByUserId, checkHasFiles, createFile, deleteFileFromRecent, checkhasFile, };
+const updateFile = (_id, name) => __awaiter(void 0, void 0, void 0, function* () {
+    const file = yield Recent.findOneAndUpdate({
+        fileId: _id,
+    }, { name });
+    const files = yield Recent.find();
+    return files;
+});
+export { checkUserExist, getFilesByUserId, checkHasFiles, createFile, deleteFileFromRecent, getFileById, updateFile, };

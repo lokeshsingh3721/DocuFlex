@@ -30,16 +30,7 @@ export const WebSocketProvider = ({ children }: React.PropsWithChildren) => {
     // Handle WebSocket messages within this effect
     const handleWebSocketMessage = (event: MessageEvent) => {
       const message = JSON.parse(event.data);
-      if (message.type === "newFile") {
-        setRecentFiles(message.files);
-      } else if (message.type === "initial") {
-        console.log(message.files);
-        setRecentFiles(message.files);
-      } else if (message.type === "delete") {
-        console.log("deleting the files ", message.files);
-        console.log(message.files);
-        setRecentFiles(message.files);
-      }
+      setRecentFiles(message.files);
     };
 
     if (ws.current) {
@@ -63,8 +54,18 @@ export const WebSocketProvider = ({ children }: React.PropsWithChildren) => {
     }
   };
 
+  const updateFile = (fileId: string) => {
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      const token = localStorage.getItem("token");
+      const type = "update";
+      ws.current.send(JSON.stringify({ type, fileId, token }));
+    }
+  };
+
   return (
-    <WebSocketContext.Provider value={{ recentFiles, sendFile, deleteFile }}>
+    <WebSocketContext.Provider
+      value={{ recentFiles, sendFile, deleteFile, updateFile }}
+    >
       {children}
     </WebSocketContext.Provider>
   );

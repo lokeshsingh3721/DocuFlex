@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Table from "../components/Table";
 import { FileType } from "../../types";
 import getFilesByType from "../utils/getFilesByType";
+import TableForPage from "../components/TableForPage";
 
 const Images = () => {
   const [videos, setVideos] = useState<FileType[] | null | undefined>(
@@ -43,7 +43,7 @@ const Images = () => {
         </div>
       </div>
       {videos && videos.length > 0 ? (
-        <Table files={videos} />
+        <TableForPage Files={videos} />
       ) : (
         <h1 className="text-center font-bold text-xl">No Videos </h1>
       )}

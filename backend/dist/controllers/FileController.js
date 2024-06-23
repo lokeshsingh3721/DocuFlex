@@ -21,6 +21,11 @@ const parseFileType = z.object({
     userId: z.string(),
     fileType: z.string().optional(),
 });
+const parseFileUpdate = z.object({
+    name: z.string(),
+    fileId: z.string(),
+    userId: z.string(),
+});
 export const createFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // zod validation
@@ -196,5 +201,47 @@ export const deleteFile = (req, res) => __awaiter(void 0, void 0, void 0, functi
             });
             console.log(error.message);
         }
+    }
+});
+export const updateFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { fileId, name } = req.query;
+        const userId = req.headers["userId"];
+        console.log(fileId, name);
+        // zod validation
+        const { success, data } = parseFileUpdate.safeParse({
+            fileId,
+            name,
+            userId,
+        });
+        if (!success) {
+            return res.status(404).json({
+                success: false,
+                message: "invalid input",
+            });
+        }
+        // check file exist or not
+        const fileExist = yield File.findById({
+            _id: data.fileId,
+        });
+        if (!fileExist) {
+            return res.status(404).json({
+                success: false,
+                message: "file doesnot exist",
+            });
+        }
+        // update file
+        yield File.findOneAndUpdate({ _id: data.fileId, name: data.name });
+        return res.status(200).json({
+            success: true,
+            message: "update successfully",
+        });
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(501).json({
+                success: false,
+                message: error.message,
+            });
     }
 });

@@ -5,7 +5,7 @@ import { FolderType } from "../../types";
 
 import { useParams } from "react-router-dom";
 import createFolder from "../utils/createFolder";
-import RecentTable from "../components/RecentTablt";
+import RecentTable from "../components/RecentTable";
 
 const Home = () => {
   const [folders, setFolders] = useState<FolderType[] | null | undefined>(
@@ -80,7 +80,7 @@ const Home = () => {
       </div>
 
       {open && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
             <h2 className="text-lg font-semibold mb-4">Create Folder</h2>
             <input

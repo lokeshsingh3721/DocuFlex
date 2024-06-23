@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Table from "../components/Table";
 import { FileType } from "../../types";
 import getFilesByType from "../utils/getFilesByType";
+import TableForPage from "../components/TableForPage";
 
 const Images = () => {
   const [images, setImages] = useState<FileType[] | null | undefined>(
@@ -43,7 +43,7 @@ const Images = () => {
         </div>
       </div>
       {images && images.length > 0 ? (
-        <Table files={images} />
+        <TableForPage Files={images} />
       ) : (
         <h1 className="text-center font-bold text-xl">No Images </h1>
       )}

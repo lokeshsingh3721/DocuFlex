@@ -38,4 +38,5 @@ type WebSocketContextType = {
   recentFiles: RecentFileType[] | null;
   sendFile: (fileId: string, name: string) => void;
   deleteFile: (fileId: string) => void;
+  updateFile: (fileId: string) => void;
 };
