@@ -245,3 +245,15 @@ export const updateFile = async (req: Request, res: Response) => {
       });
   }
 };
+
+export const uploadFile = async (req: Request, res: Response) => {
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+
+  res.send({
+    filename: req.file.filename,
+    filepath: `/uploads/${req.file.filename}`,
+    size: req.file.size / 1000 + "KB",
+  });
+};

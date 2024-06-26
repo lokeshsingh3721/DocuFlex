@@ -1,3 +1,5 @@
+import FileUpload from "./FileUpload";
+
 const RightSidebar = () => {
   return (
     <div className=" bg-black w-[18%] h-screen flex flex-col  gap-5 py-4 px-2 items-center  fixed top-0 right-0 text-white font-light">
@@ -18,9 +20,8 @@ const RightSidebar = () => {
         </progress>
         <p>18.7 GB of 100 GB used</p>
       </div>
-      <div className=" border-2 border-gray-400 h-[50%] flex items-center  ">
-        <input className="w-full text-xs " type="file" />
-      </div>
+
+      <FileUpload />
     </div>
   );
 };

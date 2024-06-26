@@ -48,7 +48,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="flex w-full  top-0 justify-between bg-white z-10 relative">
+      <div className="flex w-full  top-0 justify-between bg-white  relative">
         <div className={`w-[80%] flex relative ${open ? "hidden" : ""}`}>
           <input
             className="border-2 w-full border-gray-400 pl-8 py-2 outline-none"
@@ -80,7 +80,7 @@ const Home = () => {
       </div>
 
       {open && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
           <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
             <h2 className="text-lg font-semibold mb-4">Create Folder</h2>
             <input

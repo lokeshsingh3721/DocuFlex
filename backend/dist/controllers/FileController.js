@@ -245,3 +245,13 @@ export const updateFile = (req, res) => __awaiter(void 0, void 0, void 0, functi
             });
     }
 });
+export const uploadFile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.file) {
+        return res.status(400).send("No file uploaded.");
+    }
+    res.send({
+        filename: req.file.filename,
+        filepath: `/uploads/${req.file.filename}`,
+        size: req.file.size / 1000 + "KB",
+    });
+});
